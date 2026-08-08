@@ -38,9 +38,14 @@ export function SiteHeader() {
             <BookOpen className="h-3.5 w-3.5" strokeWidth={1.5} aria-hidden />
             Biblioteca
           </Link>
+          <Link to="/extensao" className={navLinkClass}>
+            <Puzzle className="h-3.5 w-3.5" strokeWidth={1.5} aria-hidden />
+            Extensão
+          </Link>
           <Link to="/apoiar" className={navLinkClass}>
             Apoiar
           </Link>
+
           {user ? (
             <button type="button" onClick={handleSignOut} className={navLinkClass}>
               <LogOut className="h-3.5 w-3.5" strokeWidth={1.5} aria-hidden />

@@ -12,6 +12,7 @@ import { Route as rootRouteImport } from './routes/__root'
 import { Route as StartHereRouteImport } from './routes/start-here'
 import { Route as RedefinirSenhaRouteImport } from './routes/redefinir-senha'
 import { Route as LibraryRouteImport } from './routes/library'
+import { Route as ExtensaoRouteImport } from './routes/extensao'
 import { Route as EntrarRouteImport } from './routes/entrar'
 import { Route as DesignRouteImport } from './routes/design'
 import { Route as ApoiarRouteImport } from './routes/apoiar'
@@ -34,6 +35,11 @@ const RedefinirSenhaRoute = RedefinirSenhaRouteImport.update({
 const LibraryRoute = LibraryRouteImport.update({
   id: '/library',
   path: '/library',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ExtensaoRoute = ExtensaoRouteImport.update({
+  id: '/extensao',
+  path: '/extensao',
   getParentRoute: () => rootRouteImport,
 } as any)
 const EntrarRoute = EntrarRouteImport.update({
@@ -82,6 +88,7 @@ export interface FileRoutesByFullPath {
   '/apoiar': typeof ApoiarRoute
   '/design': typeof DesignRouteWithChildren
   '/entrar': typeof EntrarRoute
+  '/extensao': typeof ExtensaoRoute
   '/library': typeof LibraryRoute
   '/redefinir-senha': typeof RedefinirSenhaRoute
   '/start-here': typeof StartHereRoute
@@ -95,6 +102,7 @@ export interface FileRoutesByTo {
   '/apoiar': typeof ApoiarRoute
   '/design': typeof DesignRouteWithChildren
   '/entrar': typeof EntrarRoute
+  '/extensao': typeof ExtensaoRoute
   '/library': typeof LibraryRoute
   '/redefinir-senha': typeof RedefinirSenhaRoute
   '/start-here': typeof StartHereRoute
@@ -109,6 +117,7 @@ export interface FileRoutesById {
   '/apoiar': typeof ApoiarRoute
   '/design': typeof DesignRouteWithChildren
   '/entrar': typeof EntrarRoute
+  '/extensao': typeof ExtensaoRoute
   '/library': typeof LibraryRoute
   '/redefinir-senha': typeof RedefinirSenhaRoute
   '/start-here': typeof StartHereRoute
@@ -124,6 +133,7 @@ export interface FileRouteTypes {
     | '/apoiar'
     | '/design'
     | '/entrar'
+    | '/extensao'
     | '/library'
     | '/redefinir-senha'
     | '/start-here'
@@ -137,6 +147,7 @@ export interface FileRouteTypes {
     | '/apoiar'
     | '/design'
     | '/entrar'
+    | '/extensao'
     | '/library'
     | '/redefinir-senha'
     | '/start-here'
@@ -150,6 +161,7 @@ export interface FileRouteTypes {
     | '/apoiar'
     | '/design'
     | '/entrar'
+    | '/extensao'
     | '/library'
     | '/redefinir-senha'
     | '/start-here'
@@ -164,6 +176,7 @@ export interface RootRouteChildren {
   ApoiarRoute: typeof ApoiarRoute
   DesignRoute: typeof DesignRouteWithChildren
   EntrarRoute: typeof EntrarRoute
+  ExtensaoRoute: typeof ExtensaoRoute
   LibraryRoute: typeof LibraryRoute
   RedefinirSenhaRoute: typeof RedefinirSenhaRoute
   StartHereRoute: typeof StartHereRoute
@@ -192,6 +205,13 @@ declare module '@tanstack/react-router' {
       path: '/library'
       fullPath: '/library'
       preLoaderRoute: typeof LibraryRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/extensao': {
+      id: '/extensao'
+      path: '/extensao'
+      fullPath: '/extensao'
+      preLoaderRoute: typeof ExtensaoRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/entrar': {
@@ -281,6 +301,7 @@ const rootRouteChildren: RootRouteChildren = {
   ApoiarRoute: ApoiarRoute,
   DesignRoute: DesignRouteWithChildren,
   EntrarRoute: EntrarRoute,
+  ExtensaoRoute: ExtensaoRoute,
   LibraryRoute: LibraryRoute,
   RedefinirSenhaRoute: RedefinirSenhaRoute,
   StartHereRoute: StartHereRoute,
