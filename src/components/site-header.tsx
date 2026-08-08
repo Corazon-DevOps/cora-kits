@@ -1,5 +1,5 @@
 import { Link, useNavigate } from "@tanstack/react-router";
-import { BookOpen, LogOut, Puzzle } from "lucide-react";
+import { BookOpen, LogOut, Puzzle, Terminal } from "lucide-react";
 import { StartHereButton } from "@/components/start-here-button";
 import { useAuth } from "@/lib/auth";
 
@@ -42,9 +42,14 @@ export function SiteHeader() {
             <Puzzle className="h-3.5 w-3.5" strokeWidth={1.5} aria-hidden />
             Extensão
           </Link>
+          <Link to="/prompt" className={navLinkClass}>
+            <Terminal className="h-3.5 w-3.5" strokeWidth={1.5} aria-hidden />
+            Prompt
+          </Link>
           <Link to="/apoiar" className={navLinkClass}>
             Apoiar
           </Link>
+
 
           {user ? (
             <button type="button" onClick={handleSignOut} className={navLinkClass}>
