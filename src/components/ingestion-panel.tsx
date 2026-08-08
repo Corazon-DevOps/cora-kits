@@ -292,15 +292,16 @@ export function IngestionPanel() {
             setZoneHover(false);
             if (e.dataTransfer.files?.length) addFiles(e.dataTransfer.files);
           }}
-          aria-label="Drop assets or click to browse"
+          aria-label="Solte arquivos ou clique para escolher"
         >
-          <span className="ingest-zone-eyebrow">// drop zone</span>
+          <span className="ingest-zone-eyebrow">// área de upload</span>
           <span className="ingest-zone-title">
-            Drag &amp; drop a deck, logo, screenshot, or PDF
+            Arraste e solte uma apresentação, logo, print ou PDF
           </span>
           <span className="ingest-zone-meta">
-            — or <u>click to browse</u> · PDF · PNG · JPG · WEBP · SVG · 20 MB each
+            — ou <u>clique para escolher</u> · PDF · PNG · JPG · WEBP · SVG · 20 MB cada
           </span>
+
           <input
             ref={inputRef}
             type="file"
