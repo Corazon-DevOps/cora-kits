@@ -1,6 +1,5 @@
 import { Link, useNavigate } from "@tanstack/react-router";
 import { BookOpen, LogOut, Puzzle, Terminal } from "lucide-react";
-import { StartHereButton } from "@/components/start-here-button";
 import { useAuth } from "@/lib/auth";
 
 const navLinkClass =
@@ -30,9 +29,6 @@ export function SiteHeader() {
         >
           Cora Extrator
         </Link>
-        <div className="absolute left-1/2 -translate-x-1/2">
-          <StartHereButton />
-        </div>
         <nav className="flex shrink-0 items-center gap-4 sm:gap-8">
           <Link to="/library" className={navLinkClass}>
             <BookOpen className="h-3.5 w-3.5" strokeWidth={1.5} aria-hidden />
