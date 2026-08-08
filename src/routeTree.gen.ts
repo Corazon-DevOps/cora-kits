@@ -15,6 +15,7 @@ import { Route as PlanosRouteImport } from './routes/planos'
 import { Route as LibraryRouteImport } from './routes/library'
 import { Route as EntrarRouteImport } from './routes/entrar'
 import { Route as DesignRouteImport } from './routes/design'
+import { Route as ApoiarRouteImport } from './routes/apoiar'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as ShareShareTokenRouteImport } from './routes/share.$shareToken'
 import { Route as KitKitIdRouteImport } from './routes/kit.$kitId'
@@ -51,6 +52,11 @@ const DesignRoute = DesignRouteImport.update({
   path: '/design',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ApoiarRoute = ApoiarRouteImport.update({
+  id: '/apoiar',
+  path: '/apoiar',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
@@ -79,6 +85,7 @@ const DesignHistoryDiffRoute = DesignHistoryDiffRouteImport.update({
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/apoiar': typeof ApoiarRoute
   '/design': typeof DesignRouteWithChildren
   '/entrar': typeof EntrarRoute
   '/library': typeof LibraryRoute
@@ -92,6 +99,7 @@ export interface FileRoutesByFullPath {
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/apoiar': typeof ApoiarRoute
   '/design': typeof DesignRouteWithChildren
   '/entrar': typeof EntrarRoute
   '/library': typeof LibraryRoute
@@ -106,6 +114,7 @@ export interface FileRoutesByTo {
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/apoiar': typeof ApoiarRoute
   '/design': typeof DesignRouteWithChildren
   '/entrar': typeof EntrarRoute
   '/library': typeof LibraryRoute
@@ -121,6 +130,7 @@ export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
     | '/'
+    | '/apoiar'
     | '/design'
     | '/entrar'
     | '/library'
@@ -134,6 +144,7 @@ export interface FileRouteTypes {
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
+    | '/apoiar'
     | '/design'
     | '/entrar'
     | '/library'
@@ -147,6 +158,7 @@ export interface FileRouteTypes {
   id:
     | '__root__'
     | '/'
+    | '/apoiar'
     | '/design'
     | '/entrar'
     | '/library'
@@ -161,6 +173,7 @@ export interface FileRouteTypes {
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  ApoiarRoute: typeof ApoiarRoute
   DesignRoute: typeof DesignRouteWithChildren
   EntrarRoute: typeof EntrarRoute
   LibraryRoute: typeof LibraryRoute
@@ -213,6 +226,13 @@ declare module '@tanstack/react-router' {
       path: '/design'
       fullPath: '/design'
       preLoaderRoute: typeof DesignRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/apoiar': {
+      id: '/apoiar'
+      path: '/apoiar'
+      fullPath: '/apoiar'
+      preLoaderRoute: typeof ApoiarRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/': {
@@ -278,6 +298,7 @@ const DesignRouteWithChildren =
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  ApoiarRoute: ApoiarRoute,
   DesignRoute: DesignRouteWithChildren,
   EntrarRoute: EntrarRoute,
   LibraryRoute: LibraryRoute,
@@ -290,3 +311,13 @@ const rootRouteChildren: RootRouteChildren = {
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
+
+import type { getRouter } from './router.tsx'
+import type { startInstance } from './start.ts'
+declare module '@tanstack/react-start' {
+  interface Register {
+    ssr: true
+    router: Awaited<ReturnType<typeof getRouter>>
+    config: Awaited<ReturnType<typeof startInstance.getOptions>>
+  }
+}

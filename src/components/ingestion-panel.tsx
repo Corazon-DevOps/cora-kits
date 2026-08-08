@@ -252,8 +252,8 @@ export function IngestionPanel() {
 
         {!user && (
           <p className="ingest-gate">
-            <Link to="/entrar" search={{ redirect: "/" }}>Crie sua conta</Link> para extrair — a
-            primeira extração é gratuita, depois R$ 15/mês.
+            <Link to="/entrar" search={{ redirect: "/" }}>Crie sua conta</Link> para extrair — é
+            gratuito.
           </p>
         )}
 
