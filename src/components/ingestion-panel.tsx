@@ -221,7 +221,7 @@ export function IngestionPanel() {
     <>
       <style>{panelCss}</style>
 
-      <form className="ingest" onSubmit={submit} aria-label="Brand ingestion">
+      <form className="ingest" onSubmit={submit} aria-label="Extração de marca">
         <div className="ingest-row">
           <span className="ingest-prefix" aria-hidden="true">URL /</span>
           <input
@@ -229,7 +229,7 @@ export function IngestionPanel() {
             inputMode="url"
             autoComplete="off"
             spellCheck={false}
-            placeholder="paste any website"
+            placeholder="cole qualquer site"
             value={url}
             onChange={(e) => {
               signalIntent();
@@ -238,28 +238,36 @@ export function IngestionPanel() {
             onFocus={signalIntent}
             disabled={busy || !ready}
             className="ingest-input"
-            aria-label="Website URL"
+            aria-label="Endereço do site"
           />
-          <button type="submit" className="ingest-go" disabled={busy || !ready} aria-label="Extract">
+          <button type="submit" className="ingest-go" disabled={busy || !ready} aria-label="Extrair">
             {!ready ? (
               <span className="ingest-go-label is-busy">
-                [ INITIALIZING<span className="ingest-dots" aria-hidden="true"><span>.</span><span>.</span><span>.</span></span> ]
+                [ INICIANDO<span className="ingest-dots" aria-hidden="true"><span>.</span><span>.</span><span>.</span></span> ]
               </span>
             ) : busy ? (
               <span className="ingest-go-label is-busy">
-                [ EXTRACTING<span className="ingest-dots" aria-hidden="true"><span>.</span><span>.</span><span>.</span></span> ]
+                [ EXTRAINDO<span className="ingest-dots" aria-hidden="true"><span>.</span><span>.</span><span>.</span></span> ]
               </span>
             ) : (
-              <span key={stageTick} className="ingest-go-label">[ EXTRACT → ]</span>
+              <span key={stageTick} className="ingest-go-label">[ EXTRAIR → ]</span>
             )}
           </button>
         </div>
 
+        {!user && (
+          <p className="ingest-gate">
+            <Link to="/entrar" search={{ redirect: "/" }}>Crie sua conta</Link> para extrair — a
+            primeira extração é gratuita, depois R$ 15/mês.
+          </p>
+        )}
+
         {busy && (
           <div className="ingest-progress">
-            <ExtractionProgress variant="panel" hint="Usually 15–30 seconds" />
+            <ExtractionProgress variant="panel" hint="Normalmente 15–30 segundos" />
           </div>
         )}
+
 
         <div
           className={`ingest-zone${zoneHover ? " is-hover" : ""}`}
