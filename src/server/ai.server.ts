@@ -233,19 +233,21 @@ export async function callAIStructured<T>(opts: {
   return JSON.parse(call.function.arguments) as T;
 }
 
-const FIRECRAWL_API = "https://api.firecrawl.dev";
+const FIRECRAWL_GATEWAY = "https://connector-gateway.lovable.dev/firecrawl";
 
 export async function firecrawlScrape(url: string) {
-  const key = process.env.FIRECRAWL_API_KEY;
-  if (!key) return directScrape(url);
+  const lovableKey = process.env.LOVABLE_API_KEY;
+  const firecrawlKey = process.env.FIRECRAWL_API_KEY;
+  if (!lovableKey || !firecrawlKey) return directScrape(url);
 
   async function apiScrape() {
     const timeout = timeoutSignal(SCRAPE_TIMEOUT_MS);
     try {
-      const res = await fetch(`${FIRECRAWL_API}/v2/scrape`, {
+      const res = await fetch(`${FIRECRAWL_GATEWAY}/v2/scrape`, {
         method: "POST",
         headers: {
-          Authorization: `Bearer ${key}`,
+          Authorization: `Bearer ${lovableKey}`,
+          "X-Connection-Api-Key": firecrawlKey!,
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
@@ -278,14 +280,16 @@ export async function firecrawlScrape(url: string) {
 
 // Map a site to discover URLs. Returns up to `limit` links.
 export async function firecrawlMap(url: string, limit = 50): Promise<string[]> {
-  const key = process.env.FIRECRAWL_API_KEY;
-  if (!key) return [];
+  const lovableKey = process.env.LOVABLE_API_KEY;
+  const firecrawlKey = process.env.FIRECRAWL_API_KEY;
+  if (!lovableKey || !firecrawlKey) return [];
   try {
     const timeout = timeoutSignal(MAP_TIMEOUT_MS);
-    const res = await fetch(`${FIRECRAWL_API}/v2/map`, {
+    const res = await fetch(`${FIRECRAWL_GATEWAY}/v2/map`, {
       method: "POST",
       headers: {
-        Authorization: `Bearer ${key}`,
+        Authorization: `Bearer ${lovableKey}`,
+        "X-Connection-Api-Key": firecrawlKey!,
         "Content-Type": "application/json",
       },
       body: JSON.stringify({ url, limit, includeSubdomains: false }),
