@@ -156,6 +156,24 @@ const css = `
   }
   .nav-links a:hover { opacity: 1; color: var(--hanko); }
   .nav-links a svg { width: 13px; height: 13px; stroke-width: 1.5; }
+  .nav-signout {
+    appearance: none;
+    background: none;
+    border: 0;
+    padding: 0;
+    font: inherit;
+    letter-spacing: inherit;
+    text-transform: inherit;
+    color: var(--sumi);
+    opacity: 0.75;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+  }
+  .nav-signout:hover { opacity: 1; color: var(--hanko); }
+  .nav-signout svg { width: 13px; height: 13px; stroke-width: 1.5; }
+
 
   /* ---------- Hero ---------- */
   .hero {
