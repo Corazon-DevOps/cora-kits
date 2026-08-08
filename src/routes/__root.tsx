@@ -87,12 +87,35 @@ function RootShell({ children }: { children: React.ReactNode }) {
   );
 }
 
+function PostLoginRedirect() {
+  const { user, loading } = useAuth();
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    if (loading || !user) return;
+    let dest: string | null = null;
+    try {
+      dest = sessionStorage.getItem("cora:pos-login");
+      if (dest) sessionStorage.removeItem("cora:pos-login");
+    } catch {
+      /* ignore */
+    }
+    if (!dest || !dest.startsWith("/") || dest.startsWith("//")) return;
+    if (dest === window.location.pathname) return;
+    navigate({ to: dest, replace: true });
+  }, [loading, user, navigate]);
+
+  return null;
+}
+
 function RootComponent() {
   return (
     <AuthProvider>
       <SmoothScroll />
+      <PostLoginRedirect />
       <Outlet />
       <Toaster />
     </AuthProvider>
   );
 }
+
