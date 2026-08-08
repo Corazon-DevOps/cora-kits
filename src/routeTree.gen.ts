@@ -9,7 +9,6 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
-import { Route as StartHereRouteImport } from './routes/start-here'
 import { Route as RedefinirSenhaRouteImport } from './routes/redefinir-senha'
 import { Route as PromptRouteImport } from './routes/prompt'
 import { Route as LibraryRouteImport } from './routes/library'
@@ -23,11 +22,6 @@ import { Route as KitKitIdRouteImport } from './routes/kit.$kitId'
 import { Route as DesignHistoryRouteImport } from './routes/design.history'
 import { Route as DesignHistoryDiffRouteImport } from './routes/design.history.diff'
 
-const StartHereRoute = StartHereRouteImport.update({
-  id: '/start-here',
-  path: '/start-here',
-  getParentRoute: () => rootRouteImport,
-} as any)
 const RedefinirSenhaRoute = RedefinirSenhaRouteImport.update({
   id: '/redefinir-senha',
   path: '/redefinir-senha',
@@ -98,7 +92,6 @@ export interface FileRoutesByFullPath {
   '/library': typeof LibraryRoute
   '/prompt': typeof PromptRoute
   '/redefinir-senha': typeof RedefinirSenhaRoute
-  '/start-here': typeof StartHereRoute
   '/design/history': typeof DesignHistoryRouteWithChildren
   '/kit/$kitId': typeof KitKitIdRoute
   '/share/$shareToken': typeof ShareShareTokenRoute
@@ -113,7 +106,6 @@ export interface FileRoutesByTo {
   '/library': typeof LibraryRoute
   '/prompt': typeof PromptRoute
   '/redefinir-senha': typeof RedefinirSenhaRoute
-  '/start-here': typeof StartHereRoute
   '/design/history': typeof DesignHistoryRouteWithChildren
   '/kit/$kitId': typeof KitKitIdRoute
   '/share/$shareToken': typeof ShareShareTokenRoute
@@ -129,7 +121,6 @@ export interface FileRoutesById {
   '/library': typeof LibraryRoute
   '/prompt': typeof PromptRoute
   '/redefinir-senha': typeof RedefinirSenhaRoute
-  '/start-here': typeof StartHereRoute
   '/design/history': typeof DesignHistoryRouteWithChildren
   '/kit/$kitId': typeof KitKitIdRoute
   '/share/$shareToken': typeof ShareShareTokenRoute
@@ -146,7 +137,6 @@ export interface FileRouteTypes {
     | '/library'
     | '/prompt'
     | '/redefinir-senha'
-    | '/start-here'
     | '/design/history'
     | '/kit/$kitId'
     | '/share/$shareToken'
@@ -161,7 +151,6 @@ export interface FileRouteTypes {
     | '/library'
     | '/prompt'
     | '/redefinir-senha'
-    | '/start-here'
     | '/design/history'
     | '/kit/$kitId'
     | '/share/$shareToken'
@@ -176,7 +165,6 @@ export interface FileRouteTypes {
     | '/library'
     | '/prompt'
     | '/redefinir-senha'
-    | '/start-here'
     | '/design/history'
     | '/kit/$kitId'
     | '/share/$shareToken'
@@ -192,20 +180,12 @@ export interface RootRouteChildren {
   LibraryRoute: typeof LibraryRoute
   PromptRoute: typeof PromptRoute
   RedefinirSenhaRoute: typeof RedefinirSenhaRoute
-  StartHereRoute: typeof StartHereRoute
   KitKitIdRoute: typeof KitKitIdRoute
   ShareShareTokenRoute: typeof ShareShareTokenRoute
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
-    '/start-here': {
-      id: '/start-here'
-      path: '/start-here'
-      fullPath: '/start-here'
-      preLoaderRoute: typeof StartHereRouteImport
-      parentRoute: typeof rootRouteImport
-    }
     '/redefinir-senha': {
       id: '/redefinir-senha'
       path: '/redefinir-senha'
@@ -325,7 +305,6 @@ const rootRouteChildren: RootRouteChildren = {
   LibraryRoute: LibraryRoute,
   PromptRoute: PromptRoute,
   RedefinirSenhaRoute: RedefinirSenhaRoute,
-  StartHereRoute: StartHereRoute,
   KitKitIdRoute: KitKitIdRoute,
   ShareShareTokenRoute: ShareShareTokenRoute,
 }

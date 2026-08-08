@@ -2,7 +2,6 @@ import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 import { BookOpen, LogOut } from "lucide-react";
 import { IngestionPanel } from "@/components/ingestion-panel";
 import { RecentKits } from "@/components/recent-kits";
-import { StartHereButton } from "@/components/start-here-button";
 import { useAuth } from "@/lib/auth";
 
 export const Route = createFileRoute("/")({
@@ -51,9 +50,6 @@ function Landing() {
       <div className="page">
         <nav className="nav">
           <Link to="/" className="brand">Cora Extrator</Link>
-          <div className="nav-center">
-            <StartHereButton />
-          </div>
           <div className="nav-links">
             <Link to="/library">
               <BookOpen aria-hidden /> Biblioteca
