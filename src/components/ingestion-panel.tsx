@@ -35,6 +35,13 @@ export function IngestionPanel() {
 
   const ownerToken = user?.id ?? getAnonToken();
 
+  // Pré-preenche a URL quando vinda da extensão de navegador (/?url=...).
+  useEffect(() => {
+    const incoming = new URLSearchParams(window.location.search).get("url");
+    if (incoming) setUrl(incoming);
+  }, []);
+
+
   // Probe the server function layer before allowing extraction. In the Lovable
   // sandbox the SSR HTML can render before the dev server / worker is actually
   // ready to accept RPC calls; submitting too early fails. Retry until warmServer

@@ -1,6 +1,15 @@
-import { Outlet, Link, createRootRoute, HeadContent, Scripts } from "@tanstack/react-router";
+import { useEffect } from "react";
+import {
+  Outlet,
+  Link,
+  createRootRoute,
+  HeadContent,
+  Scripts,
+  useNavigate,
+} from "@tanstack/react-router";
 import { Toaster } from "@/components/ui/sonner";
-import { AuthProvider } from "@/lib/auth";
+import { AuthProvider, useAuth } from "@/lib/auth";
+
 import { SmoothScroll } from "@/components/smooth-scroll";
 import appCss from "../styles.css?url";
 
@@ -87,12 +96,35 @@ function RootShell({ children }: { children: React.ReactNode }) {
   );
 }
 
+function PostLoginRedirect() {
+  const { user, loading } = useAuth();
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    if (loading || !user) return;
+    let dest: string | null = null;
+    try {
+      dest = sessionStorage.getItem("cora:pos-login");
+      if (dest) sessionStorage.removeItem("cora:pos-login");
+    } catch {
+      /* ignore */
+    }
+    if (!dest || !dest.startsWith("/") || dest.startsWith("//")) return;
+    if (dest === window.location.pathname) return;
+    navigate({ to: dest, replace: true });
+  }, [loading, user, navigate]);
+
+  return null;
+}
+
 function RootComponent() {
   return (
     <AuthProvider>
       <SmoothScroll />
+      <PostLoginRedirect />
       <Outlet />
       <Toaster />
     </AuthProvider>
   );
 }
+

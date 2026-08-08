@@ -92,18 +92,35 @@ function AuthPage() {
   async function onGoogle() {
     setBusy(true);
     try {
+      try {
+        sessionStorage.setItem("cora:pos-login", dest);
+      } catch {
+        /* ignore */
+      }
       const result = await lovable.auth.signInWithOAuth("google", {
         redirect_uri: window.location.origin,
       });
       if (result.error) {
-        toast.error("Não foi possível entrar com o Google.");
+        toast.error(traduzErro(result.error.message) || "Não foi possível entrar com o Google.");
         return;
       }
+      // Fluxo de redirect: o navegador sai desta página.
       if (result.redirected) return;
+      // Fluxo em popup: a sessão já foi definida — confirme e navegue.
+      const { data } = await supabase.auth.getSession();
+      if (data.session) {
+        toast.success("Bem-vindo!");
+        navigate({ to: dest, replace: true });
+      } else {
+        toast.error("Login com Google não concluído. Tente novamente.");
+      }
+    } catch (err: any) {
+      toast.error(traduzErro(err?.message) || "Não foi possível entrar com o Google.");
     } finally {
       setBusy(false);
     }
   }
+
 
   async function onForgot() {
     const parsed = z.string().trim().email().safeParse(email);
