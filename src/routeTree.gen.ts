@@ -11,6 +11,7 @@
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as StartHereRouteImport } from './routes/start-here'
 import { Route as RedefinirSenhaRouteImport } from './routes/redefinir-senha'
+import { Route as PromptRouteImport } from './routes/prompt'
 import { Route as LibraryRouteImport } from './routes/library'
 import { Route as ExtensaoRouteImport } from './routes/extensao'
 import { Route as EntrarRouteImport } from './routes/entrar'
@@ -30,6 +31,11 @@ const StartHereRoute = StartHereRouteImport.update({
 const RedefinirSenhaRoute = RedefinirSenhaRouteImport.update({
   id: '/redefinir-senha',
   path: '/redefinir-senha',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const PromptRoute = PromptRouteImport.update({
+  id: '/prompt',
+  path: '/prompt',
   getParentRoute: () => rootRouteImport,
 } as any)
 const LibraryRoute = LibraryRouteImport.update({
@@ -90,6 +96,7 @@ export interface FileRoutesByFullPath {
   '/entrar': typeof EntrarRoute
   '/extensao': typeof ExtensaoRoute
   '/library': typeof LibraryRoute
+  '/prompt': typeof PromptRoute
   '/redefinir-senha': typeof RedefinirSenhaRoute
   '/start-here': typeof StartHereRoute
   '/design/history': typeof DesignHistoryRouteWithChildren
@@ -104,6 +111,7 @@ export interface FileRoutesByTo {
   '/entrar': typeof EntrarRoute
   '/extensao': typeof ExtensaoRoute
   '/library': typeof LibraryRoute
+  '/prompt': typeof PromptRoute
   '/redefinir-senha': typeof RedefinirSenhaRoute
   '/start-here': typeof StartHereRoute
   '/design/history': typeof DesignHistoryRouteWithChildren
@@ -119,6 +127,7 @@ export interface FileRoutesById {
   '/entrar': typeof EntrarRoute
   '/extensao': typeof ExtensaoRoute
   '/library': typeof LibraryRoute
+  '/prompt': typeof PromptRoute
   '/redefinir-senha': typeof RedefinirSenhaRoute
   '/start-here': typeof StartHereRoute
   '/design/history': typeof DesignHistoryRouteWithChildren
@@ -135,6 +144,7 @@ export interface FileRouteTypes {
     | '/entrar'
     | '/extensao'
     | '/library'
+    | '/prompt'
     | '/redefinir-senha'
     | '/start-here'
     | '/design/history'
@@ -149,6 +159,7 @@ export interface FileRouteTypes {
     | '/entrar'
     | '/extensao'
     | '/library'
+    | '/prompt'
     | '/redefinir-senha'
     | '/start-here'
     | '/design/history'
@@ -163,6 +174,7 @@ export interface FileRouteTypes {
     | '/entrar'
     | '/extensao'
     | '/library'
+    | '/prompt'
     | '/redefinir-senha'
     | '/start-here'
     | '/design/history'
@@ -178,6 +190,7 @@ export interface RootRouteChildren {
   EntrarRoute: typeof EntrarRoute
   ExtensaoRoute: typeof ExtensaoRoute
   LibraryRoute: typeof LibraryRoute
+  PromptRoute: typeof PromptRoute
   RedefinirSenhaRoute: typeof RedefinirSenhaRoute
   StartHereRoute: typeof StartHereRoute
   KitKitIdRoute: typeof KitKitIdRoute
@@ -198,6 +211,13 @@ declare module '@tanstack/react-router' {
       path: '/redefinir-senha'
       fullPath: '/redefinir-senha'
       preLoaderRoute: typeof RedefinirSenhaRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/prompt': {
+      id: '/prompt'
+      path: '/prompt'
+      fullPath: '/prompt'
+      preLoaderRoute: typeof PromptRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/library': {
@@ -303,6 +323,7 @@ const rootRouteChildren: RootRouteChildren = {
   EntrarRoute: EntrarRoute,
   ExtensaoRoute: ExtensaoRoute,
   LibraryRoute: LibraryRoute,
+  PromptRoute: PromptRoute,
   RedefinirSenhaRoute: RedefinirSenhaRoute,
   StartHereRoute: StartHereRoute,
   KitKitIdRoute: KitKitIdRoute,
