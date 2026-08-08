@@ -11,7 +11,6 @@
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as StartHereRouteImport } from './routes/start-here'
 import { Route as RedefinirSenhaRouteImport } from './routes/redefinir-senha'
-import { Route as PlanosRouteImport } from './routes/planos'
 import { Route as LibraryRouteImport } from './routes/library'
 import { Route as EntrarRouteImport } from './routes/entrar'
 import { Route as DesignRouteImport } from './routes/design'
@@ -30,11 +29,6 @@ const StartHereRoute = StartHereRouteImport.update({
 const RedefinirSenhaRoute = RedefinirSenhaRouteImport.update({
   id: '/redefinir-senha',
   path: '/redefinir-senha',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const PlanosRoute = PlanosRouteImport.update({
-  id: '/planos',
-  path: '/planos',
   getParentRoute: () => rootRouteImport,
 } as any)
 const LibraryRoute = LibraryRouteImport.update({
@@ -89,7 +83,6 @@ export interface FileRoutesByFullPath {
   '/design': typeof DesignRouteWithChildren
   '/entrar': typeof EntrarRoute
   '/library': typeof LibraryRoute
-  '/planos': typeof PlanosRoute
   '/redefinir-senha': typeof RedefinirSenhaRoute
   '/start-here': typeof StartHereRoute
   '/design/history': typeof DesignHistoryRouteWithChildren
@@ -103,7 +96,6 @@ export interface FileRoutesByTo {
   '/design': typeof DesignRouteWithChildren
   '/entrar': typeof EntrarRoute
   '/library': typeof LibraryRoute
-  '/planos': typeof PlanosRoute
   '/redefinir-senha': typeof RedefinirSenhaRoute
   '/start-here': typeof StartHereRoute
   '/design/history': typeof DesignHistoryRouteWithChildren
@@ -118,7 +110,6 @@ export interface FileRoutesById {
   '/design': typeof DesignRouteWithChildren
   '/entrar': typeof EntrarRoute
   '/library': typeof LibraryRoute
-  '/planos': typeof PlanosRoute
   '/redefinir-senha': typeof RedefinirSenhaRoute
   '/start-here': typeof StartHereRoute
   '/design/history': typeof DesignHistoryRouteWithChildren
@@ -134,7 +125,6 @@ export interface FileRouteTypes {
     | '/design'
     | '/entrar'
     | '/library'
-    | '/planos'
     | '/redefinir-senha'
     | '/start-here'
     | '/design/history'
@@ -148,7 +138,6 @@ export interface FileRouteTypes {
     | '/design'
     | '/entrar'
     | '/library'
-    | '/planos'
     | '/redefinir-senha'
     | '/start-here'
     | '/design/history'
@@ -162,7 +151,6 @@ export interface FileRouteTypes {
     | '/design'
     | '/entrar'
     | '/library'
-    | '/planos'
     | '/redefinir-senha'
     | '/start-here'
     | '/design/history'
@@ -177,7 +165,6 @@ export interface RootRouteChildren {
   DesignRoute: typeof DesignRouteWithChildren
   EntrarRoute: typeof EntrarRoute
   LibraryRoute: typeof LibraryRoute
-  PlanosRoute: typeof PlanosRoute
   RedefinirSenhaRoute: typeof RedefinirSenhaRoute
   StartHereRoute: typeof StartHereRoute
   KitKitIdRoute: typeof KitKitIdRoute
@@ -198,13 +185,6 @@ declare module '@tanstack/react-router' {
       path: '/redefinir-senha'
       fullPath: '/redefinir-senha'
       preLoaderRoute: typeof RedefinirSenhaRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/planos': {
-      id: '/planos'
-      path: '/planos'
-      fullPath: '/planos'
-      preLoaderRoute: typeof PlanosRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/library': {
@@ -302,7 +282,6 @@ const rootRouteChildren: RootRouteChildren = {
   DesignRoute: DesignRouteWithChildren,
   EntrarRoute: EntrarRoute,
   LibraryRoute: LibraryRoute,
-  PlanosRoute: PlanosRoute,
   RedefinirSenhaRoute: RedefinirSenhaRoute,
   StartHereRoute: StartHereRoute,
   KitKitIdRoute: KitKitIdRoute,
@@ -311,13 +290,3 @@ const rootRouteChildren: RootRouteChildren = {
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
-
-import type { getRouter } from './router.tsx'
-import type { startInstance } from './start.ts'
-declare module '@tanstack/react-start' {
-  interface Register {
-    ssr: true
-    router: Awaited<ReturnType<typeof getRouter>>
-    config: Awaited<ReturnType<typeof startInstance.getOptions>>
-  }
-}
