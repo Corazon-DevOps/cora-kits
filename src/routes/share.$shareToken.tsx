@@ -20,7 +20,7 @@ function SharedKitPage() {
   useEffect(() => {
     fetchKit({ data: { shareToken } })
       .then(setData)
-      .catch((e: any) => setErr(e?.message ?? "Failed to load"));
+      .catch((e: any) => setErr(e?.message ?? "Falha ao carregar"));
   }, [shareToken, fetchKit]);
 
   if (err) {
@@ -31,7 +31,7 @@ function SharedKitPage() {
           <AlertCircle className="mx-auto h-10 w-10 text-destructive" />
           <h1 className="mt-4 text-2xl font-semibold">{err}</h1>
           <Link to="/" className="mt-6 inline-block">
-            <Button>Go home</Button>
+            <Button>Ir para o início</Button>
           </Link>
         </div>
       </div>
@@ -56,7 +56,7 @@ function SharedKitPage() {
       <main className="mx-auto max-w-7xl px-6 py-12">
         <div className="mb-8">
           <span className="rounded-full bg-accent/10 px-3 py-1 text-xs uppercase tracking-wider text-accent">
-            Shared kit · read-only
+            Kit compartilhado · somente leitura
           </span>
           <h1 className="mt-3 text-4xl font-semibold tracking-tight">{kit.name}</h1>
           {kit.source_url && (
@@ -74,7 +74,7 @@ function SharedKitPage() {
         {/* Colors */}
         <section className="mb-12">
           <h2 className="mb-4 text-sm font-semibold uppercase tracking-wider text-muted-foreground">
-            Colors
+            Cores
           </h2>
           <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
             {data.colors.map((c: any) => (
@@ -94,7 +94,7 @@ function SharedKitPage() {
         {data.fonts.length > 0 && (
           <section className="mb-12">
             <h2 className="mb-4 text-sm font-semibold uppercase tracking-wider text-muted-foreground">
-              Typography
+              Tipografia
             </h2>
             <div className="grid gap-4">
               {data.fonts.map((f: any) => (
@@ -105,7 +105,7 @@ function SharedKitPage() {
                     className="mt-3 text-3xl"
                     style={{ fontFamily: `"${f.family}", ${f.role === "mono" ? "monospace" : "sans-serif"}` }}
                   >
-                    The quick brown fox jumps over the lazy dog
+                    A rápida raposa marrom salta sobre o cão preguiçoso
                   </div>
                 </div>
               ))}
@@ -117,7 +117,7 @@ function SharedKitPage() {
         {data.assets.length > 0 && (
           <section className="mb-12">
             <h2 className="mb-4 text-sm font-semibold uppercase tracking-wider text-muted-foreground">
-              Logos & Assets
+              Logos e ativos
             </h2>
             <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
               {data.assets.map((a: any) => (
@@ -146,16 +146,16 @@ function SharedKitPage() {
         {data.voice && (
           <section className="mb-12">
             <h2 className="mb-4 text-sm font-semibold uppercase tracking-wider text-muted-foreground">
-              Voice
+              Voz
             </h2>
             <VoiceSection voice={data.voice} kitId={data.kit.id} />
           </section>
         )}
 
         <div className="mt-16 rounded-xl border border-border bg-card p-8 text-center">
-          <p className="text-sm text-muted-foreground">Build your own brand kit in seconds.</p>
+          <p className="text-sm text-muted-foreground">Crie seu próprio kit de marca em segundos.</p>
           <Link to="/" className="mt-3 inline-block">
-            <Button>Try Brand DNA</Button>
+            <Button>Experimente o Cora Extrator</Button>
           </Link>
         </div>
       </main>

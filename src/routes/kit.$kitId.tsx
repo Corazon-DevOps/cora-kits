@@ -106,7 +106,7 @@ function KitPage() {
           pollTimer = setTimeout(load, 2000);
         }
       } catch (e: any) {
-        if (!cancelled) setErr(e?.message ?? "Failed to load kit");
+        if (!cancelled) setErr(e?.message ?? "Falha ao carregar o kit");
       }
     }
     load();
@@ -120,14 +120,14 @@ function KitPage() {
     let urlToUse = overrideUrl?.trim() || data?.kit?.source_url || "";
     if (urlToUse && !/^https?:\/\//i.test(urlToUse)) urlToUse = `https://${urlToUse}`;
     if (!urlToUse) {
-      toast.error("This kit doesn't have a URL to retry.");
+      toast.error("Este kit não tem uma URL para tentar novamente.");
       return;
     }
     try {
       // basic URL shape check
       new URL(urlToUse);
     } catch {
-      toast.error("That doesn't look like a valid URL.");
+      toast.error("Isso não parece uma URL válida.");
       return;
     }
     setRetrying(true);
@@ -136,13 +136,13 @@ function KitPage() {
       const res = await retryExtract({
         data: { kitId, ownerToken, url: urlToUse },
       });
-      if (!res.ok) throw new Error(res.error ?? "Extraction failed");
+      if (!res.ok) throw new Error(res.error ?? "Falha na extração");
       const fresh = await fetchKit({ data: { kitId, ownerToken } });
       setData(fresh);
       setEditingUrl(false);
-      toast.success("Extraction completed");
+      toast.success("Extração concluída");
     } catch (e: any) {
-      const msg = e?.message ?? "Extraction failed";
+      const msg = e?.message ?? "Falha na extração";
       setData((d) =>
         d
           ? { ...d, kit: { ...d.kit, status: "error", error_message: msg, source_url: urlToUse } }
@@ -160,12 +160,12 @@ function KitPage() {
         <SiteHeader />
         <main className="mx-auto max-w-3xl px-6 py-20">
           <FailurePanel
-            eyebrow="// KIT / UNAVAILABLE"
+            eyebrow="// KIT / INDISPONÍVEL"
             slug="ERR 02"
-            headline="We couldn't load this kit"
+            headline="Não foi possível carregar este kit"
             bodyLines={[err]}
             details={{ message: err }}
-            primaryLabel="[ TRY AGAIN ]"
+            primaryLabel="[ TENTAR NOVAMENTE ]"
             onPrimary={() => {
               setErr(null);
               setData(null);
@@ -182,7 +182,7 @@ function KitPage() {
       <div className="min-h-screen bg-background">
         <SiteHeader />
         <main className="mx-auto max-w-7xl px-6 py-12">
-          <QuietLoader label="Loading kit" />
+          <QuietLoader label="Carregando kit" />
         </main>
       </div>
     );
@@ -202,7 +202,7 @@ function KitPage() {
             to="/"
             className="font-mono text-[11px] uppercase tracking-[0.22em] text-muted-foreground hover:text-foreground"
           >
-            ← New kit
+            ← Novo kit
           </Link>
           <div className="mt-6 flex flex-wrap items-end justify-between gap-4 border-b border-[color:var(--border-subtle)] pb-6 sm:gap-6 sm:pb-8">
             <div className="min-w-0">
@@ -235,25 +235,25 @@ function KitPage() {
 
         {(status === "error" || isStalled) && (
           <FailurePanel
-            eyebrow={isStalled ? "// EXTRACTION / STALLED" : "// EXTRACTION / FAILED"}
+            eyebrow={isStalled ? "// EXTRAÇÃO / PARADA" : "// EXTRAÇÃO / FALHOU"}
             slug={isStalled ? "ERR 03" : "ERR 01"}
-            headline={isStalled ? "Extraction stalled" : "Extraction did not complete"}
+            headline={isStalled ? "Extração parada" : "Extração não concluída"}
             bodyLines={
               kit.source_url
                 ? [
-                    isStalled ? "The extraction started, then stopped reporting progress for" : "We could not read a brand kit from",
+                    isStalled ? "A extração começou, mas parou de reportar progresso para" : "Não conseguimos ler um brand kit a partir de",
                     { mono: kit.source_url as string },
                     isStalled
-                      ? "Retry will restart it from this kit instead of leaving the page waiting."
-                      : "The site may have blocked the request, or the page returned no usable color, type, or voice signal.",
+                      ? "Tentar novamente reinicia a extração a partir deste kit, em vez de deixar a página esperando."
+                      : "O site pode ter bloqueado a solicitação, ou a página não retornou sinais utilizáveis de cor, tipografia ou voz.",
                   ]
-                : ["This kit has no source URL on file. Start a new kit to retry."]
+                : ["Este kit não tem uma URL de origem registrada. Inicie um novo kit para tentar novamente."]
             }
-            primaryLabel={kit.source_url ? "[ RETRY EXTRACTION ]" : undefined}
-            primaryBusyLabel="[ RETRYING… ]"
+            primaryLabel={kit.source_url ? "[ TENTAR EXTRAÇÃO NOVAMENTE ]" : undefined}
+            primaryBusyLabel="[ TENTANDO NOVAMENTE… ]"
             onPrimary={kit.source_url ? () => retryExtraction() : undefined}
             primaryBusy={retrying}
-            secondaryLabel="[ CHANGE URL ]"
+            secondaryLabel="[ ALTERAR URL ]"
             onSecondary={() => {
               setUrlDraft((kit.source_url as string) ?? "");
               setEditingUrl(true);
@@ -286,14 +286,14 @@ function KitPage() {
                 assets={data.assets}
                 voice={data.voice}
               />
-              <SectionAnchor id="overview" label="Overview">
+              <SectionAnchor id="overview" label="Visão geral">
                 <OverviewSection
                   assets={data.assets}
                   colors={data.colors}
                   fonts={data.fonts}
                 />
               </SectionAnchor>
-              <SectionAnchor id="assets" label="Logos & Assets">
+              <SectionAnchor id="assets" label="Logos e Assets">
                 <AssetsSection
                   assets={data.assets}
                   kitId={kit.id}
@@ -301,7 +301,7 @@ function KitPage() {
                   onChanged={() => setReloadKey((k) => k + 1)}
                 />
               </SectionAnchor>
-              <SectionAnchor id="colors" label="Colors">
+              <SectionAnchor id="colors" label="Cores">
                 <ColorsSection
                   colors={data.colors}
                   kitId={kit.id}
@@ -310,7 +310,7 @@ function KitPage() {
                   onChanged={() => setReloadKey((k) => k + 1)}
                 />
               </SectionAnchor>
-              <SectionAnchor id="type" label="Typography">
+              <SectionAnchor id="type" label="Tipografia">
                 <div className="space-y-8">
                   <TypographyScaleSection
                     scale={(kit as any).typography_scale ?? []}
@@ -322,10 +322,10 @@ function KitPage() {
               <SectionAnchor id="tokens" label="Tokens">
                 <TokensSection tokens={data.tokens} />
               </SectionAnchor>
-              <SectionAnchor id="voice" label="Voice">
+              <SectionAnchor id="voice" label="Voz">
                 <VoiceSection voice={data.voice} kitId={kit.id} />
               </SectionAnchor>
-              <SectionAnchor id="export" label="Export">
+              <SectionAnchor id="export" label="Exportar">
                 <ExportSection
                   kitId={kit.id}
                   kitName={kit.name}
@@ -352,17 +352,17 @@ function KitPage() {
 
 function copy(s: string) {
   navigator.clipboard.writeText(s);
-  toast.success("Copied");
+  toast.success("Copiado");
 }
 
 const KIT_SECTIONS = [
-  { id: "overview", label: "Overview" },
-  { id: "assets", label: "Logos & Assets" },
-  { id: "colors", label: "Colors" },
-  { id: "type", label: "Typography" },
+  { id: "overview", label: "Visão geral" },
+  { id: "assets", label: "Logos e Assets" },
+  { id: "colors", label: "Cores" },
+  { id: "type", label: "Tipografia" },
   { id: "tokens", label: "Tokens" },
-  { id: "voice", label: "Voice" },
-  { id: "export", label: "Export" },
+  { id: "voice", label: "Voz" },
+  { id: "export", label: "Exportar" },
 ] as const;
 
 function SectionAnchor({
@@ -437,7 +437,7 @@ function KitSideNav() {
   return (
     <nav className="sticky top-24 hidden h-fit w-44 shrink-0 lg:block">
       <div className="mb-3 font-mono text-[10px] uppercase tracking-[0.28em] text-muted-foreground">
-        // contents
+        // conteúdo
       </div>
       <ul className="space-y-1">
         {KIT_SECTIONS.map((s) => {
@@ -508,7 +508,7 @@ function OverviewSection({
           />
         ) : (
           <span className="font-mono text-[9px] uppercase tracking-[0.2em] text-muted-foreground">
-            no logo
+            sem logo
           </span>
         )}
       </div>
@@ -516,7 +516,7 @@ function OverviewSection({
       <div className="flex min-w-0 flex-1 items-center gap-6">
         <div className="min-w-0">
           <div className="font-mono text-[9px] uppercase tracking-[0.22em] text-muted-foreground">
-            Palette
+            Paleta
           </div>
           <div className="mt-2 flex items-center gap-1.5">
             {swatches.length === 0 && (
@@ -536,7 +536,7 @@ function OverviewSection({
 
         <div className="min-w-0">
           <div className="font-mono text-[9px] uppercase tracking-[0.22em] text-muted-foreground">
-            Type
+            Tipografia
           </div>
           <div className="mt-2 flex flex-col leading-tight">
             <span
@@ -577,7 +577,7 @@ function QuickDownloads(props: {
   async function downloadZip() {
     setBusy("zip");
     try {
-      toast.message("Building bundle…");
+      toast.message("Montando pacote…");
       const urls: string[] = [];
       for (const f of props.fonts ?? []) {
         if (f?.license !== "open") continue;
@@ -665,22 +665,22 @@ function QuickDownloads(props: {
     {
       key: "zip",
       icon: Package,
-      title: "Download full kit",
-      sub: ".zip — tokens, css, fonts, assets",
+      title: "Baixar kit completo",
+      sub: ".zip — tokens, css, fontes, assets",
       onClick: downloadZip,
     },
     {
       key: "pdf",
       icon: Download,
-      title: "Brand guide",
-      sub: ".pdf — palette, type, voice",
+      title: "Guia de marca",
+      sub: ".pdf — paleta, tipografia, voz",
       onClick: downloadPDF,
     },
     {
       key: "md",
       icon: FileText,
-      title: "Design instructions",
-      sub: ".md — full spec for designers & AI",
+      title: "Instruções de design",
+      sub: ".md — especificação completa para designers e IA",
       onClick: downloadDesignMd,
     },
   ];
@@ -763,7 +763,7 @@ function ColorCard({
     if (!canEdit || !kitId || !ownerToken) return;
     const cleanHex = hex.trim().toUpperCase();
     if (!/^#([0-9A-F]{6}|[0-9A-F]{8})$/.test(cleanHex)) {
-      toast.error("Hex must be #RRGGBB");
+      toast.error("O hex deve ser #RRGGBB");
       return;
     }
     setBusy(true);
@@ -774,7 +774,7 @@ function ColorCard({
       setEditing(false);
       onChanged?.();
     } catch (e: any) {
-      toast.error(e?.message ?? "Couldn't save");
+      toast.error(e?.message ?? "Não foi possível salvar");
     } finally {
       setBusy(false);
     }
@@ -782,13 +782,13 @@ function ColorCard({
 
   async function remove() {
     if (!canEdit || !kitId || !ownerToken) return;
-    if (!confirm(`Delete ${color.hex}?`)) return;
+    if (!confirm(`Excluir ${color.hex}?`)) return;
     setBusy(true);
     try {
       await deleteColor({ data: { kitId, ownerToken, colorId: color.id } });
       onChanged?.();
     } catch (e: any) {
-      toast.error(e?.message ?? "Couldn't delete");
+      toast.error(e?.message ?? "Não foi possível excluir");
     } finally {
       setBusy(false);
     }
@@ -800,7 +800,7 @@ function ColorCard({
         <div className="absolute right-2 top-2 z-10 flex gap-1 opacity-0 transition-opacity group-hover:opacity-100 focus-within:opacity-100">
           <button
             type="button"
-            aria-label="Edit color"
+            aria-label="Editar cor"
             onClick={() => setEditing(true)}
             disabled={busy}
             className="grid h-6 w-6 place-items-center rounded-full bg-background/80 text-foreground backdrop-blur-sm transition-colors hover:bg-foreground hover:text-background disabled:opacity-50"
@@ -809,7 +809,7 @@ function ColorCard({
           </button>
           <button
             type="button"
-            aria-label="Delete color"
+            aria-label="Excluir cor"
             onClick={remove}
             disabled={busy}
             className="grid h-6 w-6 place-items-center rounded-full bg-background/80 text-foreground backdrop-blur-sm transition-colors hover:bg-[color:var(--accent)] hover:text-background disabled:opacity-50"
@@ -826,14 +826,14 @@ function ColorCard({
               value={/^#[0-9A-F]{6}$/i.test(hex) ? hex : "#000000"}
               onChange={(e) => setHex(e.target.value.toUpperCase())}
               className="absolute inset-0 h-full w-full cursor-pointer opacity-0"
-              aria-label="Pick color"
+              aria-label="Selecionar cor"
             />
           </label>
           <div className="space-y-2 p-3">
             <input
               value={role}
               onChange={(e) => setRole(e.target.value)}
-              placeholder="role"
+              placeholder="função"
               className="w-full rounded-md border border-[color:var(--border-subtle)] bg-background px-2 py-1 font-mono text-[10px] uppercase tracking-[0.18em] outline-none focus:border-[color:rgba(10,10,10,0.45)]"
             />
             <input
@@ -851,7 +851,7 @@ function ColorCard({
                 className="inline-flex h-7 flex-1 items-center justify-center gap-1 rounded-md bg-foreground font-mono text-[10px] uppercase tracking-[0.18em] text-background hover:opacity-90 disabled:opacity-60"
               >
                 {busy ? <Loader2 className="h-3 w-3 animate-spin" /> : <Check className="h-3 w-3" />}
-                Save
+                Salvar
               </button>
               <button
                 type="button"
@@ -863,7 +863,7 @@ function ColorCard({
                 disabled={busy}
                 className="inline-flex h-7 items-center justify-center rounded-md border border-[color:var(--border-subtle)] px-2 font-mono text-[10px] uppercase tracking-[0.18em] text-muted-foreground hover:text-foreground"
               >
-                Cancel
+                Cancelar
               </button>
             </div>
           </div>
@@ -905,7 +905,7 @@ function ColorsSection({
   isOwner?: boolean;
   onChanged?: () => void;
 }) {
-  if (!colors.length) return <Empty label="No colors extracted" />;
+  if (!colors.length) return <Empty label="Nenhuma cor extraída" />;
   // Pick light + dark mode pairs from extracted colors so we can show pairings
   // for both surfaces. Fall back to pure white/black if extraction didn't yield
   // a sufficiently light or dark neutral.
@@ -934,21 +934,21 @@ function ColorsSection({
         ))}
       </div>
 
-      <PairingTable label="Light mode" colors={colors} bg={lightBg} text={lightText} />
-      <PairingTable label="Dark mode" colors={colors} bg={darkBg} text={darkText} />
+      <PairingTable label="Modo claro" colors={colors} bg={lightBg} text={lightText} />
+      <PairingTable label="Modo escuro" colors={colors} bg={darkBg} text={darkText} />
 
       <div className="flex flex-wrap items-center gap-x-5 gap-y-2 font-mono text-[10px] uppercase tracking-[0.18em] text-muted-foreground">
           <span className="inline-flex items-center gap-1.5">
             <span aria-hidden className="text-foreground">✓</span>
-            Do — safe for body copy
+            Use — seguro para texto corrido
           </span>
           <span className="inline-flex items-center gap-1.5">
             <span aria-hidden>~</span>
-            Large only — headings / icons ≥ 24px
+            Somente em tamanho grande — títulos / ícones ≥ 24px
           </span>
           <span className="inline-flex items-center gap-1.5">
             <span aria-hidden className="text-[color:var(--accent)]">×</span>
-            Don't — decorative use only
+            Evite — apenas uso decorativo
           </span>
       </div>
     </div>
@@ -969,13 +969,13 @@ function PairingTable({
   return (
     <div>
       <h3 className="mb-3 text-sm font-semibold uppercase tracking-wider text-muted-foreground">
-        {label} — pairings on {bg}
+        {label} — combinações sobre {bg}
       </h3>
       <div className="overflow-hidden rounded-xl border border-border">
         <div className="hidden grid-cols-[auto_1fr_1fr] gap-x-6 gap-y-0 px-4 py-3 text-[10px] font-mono uppercase tracking-[0.18em] text-muted-foreground sm:grid">
-          <span>Color</span>
-          <span>As text on {bg}</span>
-          <span>As fill behind {text} text</span>
+          <span>Cor</span>
+          <span>Como texto sobre {bg}</span>
+          <span>Como fundo atrás de texto {text}</span>
         </div>
         {colors.map((c) => {
           const r1 = wcag(c.hex, bg).ratio;
@@ -990,11 +990,11 @@ function PairingTable({
                 <span className="font-mono text-xs">{c.hex}</span>
               </span>
               <div className="flex items-center gap-2 sm:contents">
-                <span className="font-mono text-[10px] uppercase tracking-[0.18em] text-muted-foreground sm:hidden">As text</span>
+                <span className="font-mono text-[10px] uppercase tracking-[0.18em] text-muted-foreground sm:hidden">Como texto</span>
                 <PairingSample ratio={r1} fg={c.hex} bg={bg} />
               </div>
               <div className="flex items-center gap-2 sm:contents">
-                <span className="font-mono text-[10px] uppercase tracking-[0.18em] text-muted-foreground sm:hidden">As fill</span>
+                <span className="font-mono text-[10px] uppercase tracking-[0.18em] text-muted-foreground sm:hidden">Como fundo</span>
                 <PairingSample ratio={r2} fg={text} bg={c.hex} />
               </div>
             </div>
@@ -1027,7 +1027,7 @@ function PairingSample({ ratio, fg, bg }: { ratio: number; fg: string; bg: strin
       <div
         className={`relative flex items-center gap-2 rounded-md px-2.5 py-1.5 ${ringClass}`}
         style={{ background: bg }}
-        title={`Contrast ${ratioLabel}`}
+        title={`Contraste ${ratioLabel}`}
       >
         <span
           className="font-serif text-base leading-none"
@@ -1039,7 +1039,7 @@ function PairingSample({ ratio, fg, bg }: { ratio: number; fg: string; bg: strin
           className="font-mono text-[9px] uppercase tracking-[0.14em]"
           style={{ color: fg, opacity: 0.85 }}
         >
-          Sample
+          Amostra
         </span>
       </div>
       <span
@@ -1122,7 +1122,7 @@ function TypographyScaleSection({
   return (
     <div>
       <h3 className="mb-3 text-xs font-mono uppercase tracking-[0.18em] text-muted-foreground">
-        Type scale
+        Escala tipográfica
       </h3>
       <div className="divide-y divide-border overflow-hidden rounded-xl border border-border bg-card">
         {rows.map((r, i) => {
@@ -1154,7 +1154,7 @@ function TypographyScaleSection({
                 <div className="text-foreground">{resolved.source || r.font_family || "—"}</div>
                 {resolved.substituted && resolved.renderFamily && (
                   <div className="text-[10px] uppercase tracking-[0.16em] text-muted-foreground">
-                    rendered as {resolved.renderFamily}
+                    renderizado como {resolved.renderFamily}
                   </div>
                 )}
                 <div>
@@ -1188,20 +1188,20 @@ function defaultSize(role: string): number {
 
 function sampleFor(role: string): string {
   switch (role) {
-    case "h1": return "The headline carries the brand";
-    case "h2": return "Section heading";
-    case "h3": return "Subsection heading";
-    case "body": return "Body copy sets the rhythm of the page and shapes how every other element is read.";
-    case "caption": return "Caption — supporting detail";
-    case "label": return "LABEL TEXT";
-    default: return "Sample";
+    case "h1": return "O título carrega a marca";
+    case "h2": return "Título de seção";
+    case "h3": return "Título de subseção";
+    case "body": return "O texto corrido define o ritmo da página e molda como todos os outros elementos são lidos.";
+    case "caption": return "Legenda — detalhe de apoio";
+    case "label": return "TEXTO DE RÓTULO";
+    default: return "Amostra";
   }
 }
 
 function FontsSection({ fonts }: { fonts: any[] }) {
   useAutoImportFonts(fonts);
 
-  if (!fonts.length) return <Empty label="No fonts extracted" />;
+  if (!fonts.length) return <Empty label="Nenhuma fonte extraída" />;
   return (
     <div className="grid gap-4">
       {fonts.map((f) => (
@@ -1223,7 +1223,7 @@ function FontCard({ font: f }: { font: any }) {
   // as the font family. Fall back to a clean role-based label in that case.
   const isCssExpr = /^(var\(|--|calc\(|env\()/i.test(String(previewFamily ?? "").trim());
   const previewLabel = isCssExpr
-    ? `System ${f.role ? f.role.charAt(0).toUpperCase() + f.role.slice(1) : "Default"}`
+    ? `Sistema ${f.role ? f.role.charAt(0).toUpperCase() + f.role.slice(1) : "Padrão"}`
     : previewFamily;
   const importedOriginal = directFileCount > 0 && f.source_family && f.is_substitute;
   const license: string | null = f.license ?? null;
@@ -1242,11 +1242,11 @@ function FontCard({ font: f }: { font: any }) {
 
   const licenseLabel =
     license === "open"
-      ? "OPEN LICENSE"
+      ? "LICENÇA ABERTA"
       : license === "commercial"
-        ? "COMMERCIAL"
+        ? "COMERCIAL"
         : license === "unknown"
-          ? "LICENSE UNKNOWN"
+          ? "LICENÇA DESCONHECIDA"
           : null;
 
   // Where the user can legitimately get this font.
@@ -1262,15 +1262,15 @@ function FontCard({ font: f }: { font: any }) {
   const licenseNotice = (() => {
     if (license === "open")
       return f.license_note
-        ? `Open license — ${f.license_note}. Always verify usage terms with the foundry.`
-        : "Open license (typically OFL/Apache). Free to use; verify the specific terms before redistribution.";
+        ? `Licença aberta — ${f.license_note}. Sempre verifique os termos de uso com a fundidora.`
+        : "Licença aberta (normalmente OFL/Apache). Gratuita para uso; verifique os termos específicos antes de redistribuir.";
     if (license === "commercial")
       return f.license_note
-        ? `Commercial license required — ${f.license_note}. Purchase from the foundry before use.`
-        : "Commercial font. You must purchase a license from the foundry before using or distributing it.";
+        ? `Licença comercial necessária — ${f.license_note}. Compre da fundidora antes de usar.`
+        : "Fonte comercial. É necessário comprar uma licença da fundidora antes de usar ou distribuir.";
     return f.license_note
-      ? `License unknown — ${f.license_note}. Verify rights before any commercial use.`
-      : "License is unknown. Check the foundry or source page before commercial use.";
+      ? `Licença desconhecida — ${f.license_note}. Verifique os direitos antes de qualquer uso comercial.`
+      : "A licença é desconhecida. Verifique a fundidora ou a página de origem antes do uso comercial.";
   })();
 
   async function downloadFiles() {
@@ -1350,11 +1350,11 @@ function FontCard({ font: f }: { font: any }) {
           </div>
           {importedOriginal ? (
             <div className="mt-1 font-mono text-[11px] uppercase tracking-[0.18em] text-muted-foreground">
-              auto-imported from source
+              importado automaticamente da fonte
             </div>
           ) : isSub && f.source_family ? (
             <div className="mt-1 font-mono text-[11px] uppercase tracking-[0.18em] text-muted-foreground">
-              substitute for{" "}
+              substituta de{" "}
               <span className="text-foreground">{f.source_family}</span>
             </div>
           ) : null}
@@ -1374,7 +1374,7 @@ function FontCard({ font: f }: { font: any }) {
           )}
           {fileCount > 0 && (
             <span className="inline-flex items-center gap-1 rounded-md border border-[color:var(--border-subtle)] bg-background px-2 py-0.5 font-mono text-[10px] uppercase tracking-[0.2em] text-muted-foreground">
-              {fileCount} file{fileCount === 1 ? "" : "s"}
+              {fileCount} arquivo{fileCount === 1 ? "" : "s"}
             </span>
           )}
           <TooltipProvider delayDuration={150}>
@@ -1385,7 +1385,7 @@ function FontCard({ font: f }: { font: any }) {
                     type="button"
                     onClick={downloadFiles}
                     disabled={downloading}
-                    aria-label={`Download ${f.family} font files`}
+                    aria-label={`Baixar arquivos da fonte ${f.family}`}
                     className="inline-flex items-center gap-1.5 rounded-md border border-[color:var(--border-subtle)] bg-background px-2 py-0.5 font-mono text-[10px] uppercase tracking-[0.2em] text-foreground hover:bg-foreground hover:text-background transition-colors disabled:opacity-60"
                   >
                     {downloading ? (
@@ -1393,32 +1393,32 @@ function FontCard({ font: f }: { font: any }) {
                     ) : (
                       <Download className="h-3 w-3" />
                     )}
-                    {downloading ? "fetching" : "download"}
+                    {downloading ? "buscando" : "baixar"}
                   </button>
                 ) : externalHref ? (
                   <a
                     href={externalHref}
                     target="_blank"
                     rel="noreferrer noopener"
-                    aria-label={`Get ${f.family} from ${license === "commercial" ? "foundry" : "source"}`}
+                    aria-label={`Obter ${f.family} de ${license === "commercial" ? "fundidora" : "fonte"}`}
                     className="inline-flex items-center gap-1.5 rounded-md border border-[color:var(--border-subtle)] bg-background px-2 py-0.5 font-mono text-[10px] uppercase tracking-[0.2em] text-foreground hover:bg-foreground hover:text-background transition-colors"
                   >
                     <ExternalLink className="h-3 w-3" />
-                    {license === "commercial" ? "buy" : "get"}
+                    {license === "commercial" ? "comprar" : "obter"}
                   </a>
                 ) : (
                   <span
-                    aria-label="No download source"
+                    aria-label="Sem fonte de download"
                     className="inline-flex items-center gap-1.5 rounded-md border border-[color:var(--border-subtle)] bg-background px-2 py-0.5 font-mono text-[10px] uppercase tracking-[0.2em] text-muted-foreground opacity-60"
                   >
                     <Download className="h-3 w-3" />
-                    n/a
+                    n/d
                   </span>
                 )}
               </TooltipTrigger>
               <TooltipContent side="top" className="max-w-xs text-left">
                 <div className="font-mono text-[10px] uppercase tracking-[0.18em] mb-1">
-                  {licenseLabel ?? "License"}
+                  {licenseLabel ?? "Licença"}
                 </div>
                 <div className="text-xs leading-snug">{licenseNotice}</div>
               </TooltipContent>
@@ -1431,12 +1431,12 @@ function FontCard({ font: f }: { font: any }) {
         className="mt-5 break-words text-2xl leading-tight sm:text-3xl md:text-4xl"
         style={{ fontFamily: `"${f.family}", ${fallback}` }}
       >
-        The quick brown fox jumps over the lazy dog
+        A rápida raposa marrom pula sobre o cão preguiçoso
       </div>
 
       {f.weights?.length > 0 && (
         <div className="mt-3 font-mono text-[11px] uppercase tracking-[0.18em] text-muted-foreground">
-          weights — {f.weights.join(" / ")}
+          pesos — {f.weights.join(" / ")}
         </div>
       )}
 
@@ -1452,7 +1452,7 @@ function FontCard({ font: f }: { font: any }) {
                 rel="noreferrer noopener"
                 className="ml-1 font-mono text-[11px] uppercase tracking-[0.16em] text-foreground underline-offset-4 hover:underline"
               >
-                [ {license === "commercial" ? "buy / license" : "view source"} ]
+                [ {license === "commercial" ? "comprar / licenciar" : "ver fonte"} ]
               </a>
             </>
           )}
@@ -1488,13 +1488,13 @@ function AssetsSection({
 
   async function handleDelete(assetId: string, label: string) {
     if (deleting) return;
-    if (!confirm(`Delete "${label}"? This can't be undone.`)) return;
+    if (!confirm(`Excluir "${label}"? Esta ação não pode ser desfeita.`)) return;
     setDeleting(assetId);
     try {
       await removeAsset({ data: { kitId, ownerToken, assetId } });
       onChanged();
     } catch (e: any) {
-      toast.error(e?.message ?? "Couldn't delete");
+      toast.error(e?.message ?? "Não foi possível excluir");
     } finally {
       setDeleting(null);
     }
@@ -1506,15 +1506,15 @@ function AssetsSection({
     try {
       const res = await harvest({ data: { kitId, ownerToken } });
       if (!res.ok) {
-        toast.error(res.error ?? "Couldn't scan for more assets");
+        toast.error(res.error ?? "Não foi possível procurar mais assets");
       } else if (res.added === 0) {
-        toast("No new assets found");
+        toast("Nenhum novo asset encontrado");
       } else {
-        toast.success(`Found ${res.added} new asset${res.added === 1 ? "" : "s"}`);
+        toast.success(`Encontrado${res.added === 1 ? "" : "s"} ${res.added} novo${res.added === 1 ? "" : "s"} asset${res.added === 1 ? "" : "s"}`);
         onChanged();
       }
     } catch (e: any) {
-      toast.error(e?.message ?? "Scan failed");
+      toast.error(e?.message ?? "Falha na busca");
     } finally {
       setHarvesting(false);
     }
@@ -1550,7 +1550,7 @@ function AssetsSection({
       for (const f of failed) toast.error(`${f.kind}: ${f.error ?? "failed"}`);
       onChanged();
     } catch (e: any) {
-      toast.error(e?.message ?? "Generation failed");
+      toast.error(e?.message ?? "Falha na geração");
     } finally {
       setBusy(null);
       setBusyKinds([]);
@@ -1561,7 +1561,7 @@ function AssetsSection({
   if (!assets.length) {
     return (
       <div className="space-y-4">
-        <Empty label="No assets found" />
+        <Empty label="Nenhum asset encontrado" />
         <div className="flex justify-center">
           <button
             type="button"
@@ -1570,7 +1570,7 @@ function AssetsSection({
             className="glass inline-flex items-center gap-2 rounded-full px-5 py-2 font-mono text-[11px] uppercase tracking-[0.18em] text-foreground transition-opacity hover:opacity-80 disabled:opacity-50"
           >
             {harvesting && <Loader2 className="h-3 w-3 animate-spin" />}
-            Scan source for assets
+            Buscar assets na fonte
           </button>
         </div>
       </div>
@@ -1587,23 +1587,23 @@ function AssetsSection({
           type="button"
           onClick={findMore}
           disabled={harvesting}
-          title="Re-scan the source URL for additional logos, marks, and icons"
+          title="Refazer busca na URL de origem por mais logos, marcas e ícones"
           className="glass inline-flex items-center gap-2 rounded-full px-5 py-2 font-mono text-[11px] uppercase tracking-[0.16em] text-foreground transition-opacity hover:opacity-80 disabled:opacity-50"
         >
           {harvesting && <Loader2 className="h-3 w-3 animate-spin" />}
-          {harvesting ? "Scanning…" : "Find more"}
+          {harvesting ? "Buscando…" : "Encontrar mais"}
         </button>
       </div>
       {sourceLogo && (
         <div className="flex flex-wrap items-center justify-between gap-3 rounded-xl border border-[color:var(--border-subtle)] bg-[color:var(--surface-raised)] p-5">
           <div className="min-w-0">
             <div className="font-mono text-[10px] uppercase tracking-[0.22em] text-muted-foreground">
-              // logo variants
+              // variantes de logo
             </div>
             <div className="mt-1 text-sm text-muted-foreground [font-family:'Libre_Baskerville',serif]">
               {missingVariants.length
-                ? `Generate ${missingVariants.length} missing variant${missingVariants.length === 1 ? "" : "s"} from the source logo.`
-                : "All variants generated."}
+                ? `Gerar ${missingVariants.length} variante${missingVariants.length === 1 ? "" : "s"} faltante${missingVariants.length === 1 ? "" : "s"} a partir do logo de origem.`
+                : "Todas as variantes foram geradas."}
             </div>
           </div>
           <div className="flex flex-wrap items-center gap-2">
@@ -1618,7 +1618,7 @@ function AssetsSection({
                   disabled={!!busy || have}
                   onClick={() => runVariants(sourceLogo.id, [k])}
                   className="glass inline-flex items-center gap-2 rounded-full px-4 py-2 font-mono text-[11px] uppercase tracking-[0.16em] text-foreground transition-opacity hover:opacity-80 disabled:cursor-not-allowed disabled:opacity-50"
-                  title={have ? "Already generated" : VARIANT_PRESETS[k].label}
+                  title={have ? "Já gerado" : VARIANT_PRESETS[k].label}
                 >
                   {isBusy ? (
                     <Loader2 className="h-3 w-3 animate-spin" />
@@ -1639,7 +1639,7 @@ function AssetsSection({
                 {busyAll && busy === sourceLogo.id ? (
                   <Loader2 className="h-3 w-3 animate-spin" />
                 ) : null}
-                Generate all missing
+                Gerar todas as faltantes
               </button>
             )}
           </div>
@@ -1667,7 +1667,7 @@ function AssetsSection({
           >
             <button
               type="button"
-              aria-label="Delete asset"
+              aria-label="Excluir asset"
               onClick={() => handleDelete(a.id, a.kind)}
               disabled={deleting === a.id}
               className="absolute right-2 top-2 z-10 grid h-7 w-7 place-items-center rounded-full bg-background/85 text-foreground shadow-sm backdrop-blur-sm opacity-0 transition-all duration-150 group-hover:opacity-100 focus-visible:opacity-100 hover:bg-[color:var(--accent)] hover:text-background disabled:opacity-50"
@@ -1712,7 +1712,7 @@ function AssetsSection({
                 rel="noreferrer"
                 className="font-mono text-[11px] uppercase tracking-[0.16em] text-accent hover:underline"
               >
-                Download
+                Baixar
               </a>
             </div>
           </div>
@@ -1724,7 +1724,7 @@ function AssetsSection({
 }
 
 export function TokensSection({ tokens }: { tokens: any[] }) {
-  if (!tokens.length) return <Empty label="No tokens extracted" />;
+  if (!tokens.length) return <Empty label="Nenhum token extraído" />;
   const grouped = tokens.reduce<Record<string, any[]>>((acc, t) => {
     (acc[t.category] ||= []).push(t);
     return acc;
@@ -1754,20 +1754,20 @@ export function TokensSection({ tokens }: { tokens: any[] }) {
 }
 
 export function VoiceSection({ voice, kitId }: { voice: any; kitId: string }) {
-  if (!voice) return <Empty label="No voice analysis available" />;
+  if (!voice) return <Empty label="Nenhuma análise de voz disponível" />;
   return (
     <div className="grid gap-6 lg:grid-cols-2">
       {voice.summary && (
         <div className="rounded-xl border border-border bg-card p-6 lg:col-span-2">
           <h3 className="mb-2 text-sm font-semibold uppercase tracking-wider text-muted-foreground">
-            Brand summary
+            Resumo da marca
           </h3>
           <p className="text-lg leading-relaxed">{voice.summary}</p>
         </div>
       )}
       <div className="rounded-xl border border-border bg-card p-6">
         <h3 className="mb-3 text-sm font-semibold uppercase tracking-wider text-muted-foreground">
-          Tone
+          Tom
         </h3>
         <div className="flex flex-wrap gap-2">
           {(voice.tone ?? []).map((t: any, i: number) => (
@@ -1784,7 +1784,7 @@ export function VoiceSection({ voice, kitId }: { voice: any; kitId: string }) {
       </div>
       <div className="rounded-xl border border-border bg-card p-6">
         <h3 className="mb-3 text-sm font-semibold uppercase tracking-wider text-muted-foreground">
-          Vocabulary
+          Vocabulário
         </h3>
         <div className="flex flex-wrap gap-2">
           {(voice.vocabulary ?? []).map((v: string, i: number) => (
@@ -1795,7 +1795,7 @@ export function VoiceSection({ voice, kitId }: { voice: any; kitId: string }) {
         </div>
       </div>
       <div className="rounded-xl border border-border bg-card p-6">
-        <h3 className="mb-3 text-sm font-semibold uppercase tracking-wider text-success">Do</h3>
+        <h3 className="mb-3 text-sm font-semibold uppercase tracking-wider text-success">Fazer</h3>
         <ul className="space-y-2 text-sm">
           {(voice.dos ?? []).map((d: string, i: number) => (
             <li key={i}>· {d}</li>
@@ -1804,7 +1804,7 @@ export function VoiceSection({ voice, kitId }: { voice: any; kitId: string }) {
       </div>
       <div className="rounded-xl border border-border bg-card p-6">
         <h3 className="mb-3 text-sm font-semibold uppercase tracking-wider text-destructive">
-          Don't
+          Evitar
         </h3>
         <ul className="space-y-2 text-sm">
           {(voice.donts ?? []).map((d: string, i: number) => (
@@ -1815,7 +1815,7 @@ export function VoiceSection({ voice, kitId }: { voice: any; kitId: string }) {
       {voice.samples && (
         <div className="rounded-xl border border-border bg-card p-6 lg:col-span-2">
           <h3 className="mb-3 text-sm font-semibold uppercase tracking-wider text-muted-foreground">
-            Sample copy
+            Exemplo de texto
           </h3>
           <div className="space-y-3">
             {Object.entries(voice.samples).map(([k, v]) => (
@@ -1851,7 +1851,7 @@ function SampleCopyGenerator({ kitId }: { kitId: string }) {
       const r = await gen({ data: { kitId, kind, topic: topic.trim() } });
       setOutput(r);
     } catch (e: any) {
-      toast.error(e?.message ?? "Generation failed");
+      toast.error(e?.message ?? "Falha na geração");
     } finally {
       setBusy(false);
     }
@@ -1860,7 +1860,7 @@ function SampleCopyGenerator({ kitId }: { kitId: string }) {
   return (
     <div className="rounded-xl border border-border bg-card p-6">
       <h3 className="mb-3 flex items-center gap-2 text-sm font-semibold uppercase tracking-wider text-muted-foreground">
-        <Sparkles className="h-4 w-4" /> Generate copy in this voice
+        <Sparkles className="h-4 w-4" /> Gerar texto nessa voz
       </h3>
       <div className="grid gap-3 sm:grid-cols-[200px_1fr_auto]">
         <Select value={kind} onValueChange={(v) => setKind(v as any)}>
@@ -1868,28 +1868,28 @@ function SampleCopyGenerator({ kitId }: { kitId: string }) {
             <SelectValue />
           </SelectTrigger>
           <SelectContent>
-            <SelectItem value="headline">Headline</SelectItem>
-            <SelectItem value="cta">CTA button</SelectItem>
-            <SelectItem value="slide_title">Slide title</SelectItem>
-            <SelectItem value="email_intro">Email intro</SelectItem>
-            <SelectItem value="social_post">Social post</SelectItem>
+            <SelectItem value="headline">Título</SelectItem>
+            <SelectItem value="cta">Botão CTA</SelectItem>
+            <SelectItem value="slide_title">Título de slide</SelectItem>
+            <SelectItem value="email_intro">Introdução de e-mail</SelectItem>
+            <SelectItem value="social_post">Post social</SelectItem>
           </SelectContent>
         </Select>
         <Input
-          placeholder="What's it about? e.g. launching a new pricing plan"
+          placeholder="Sobre o que é? ex.: lançamento de um novo plano de preços"
           value={topic}
           onChange={(e) => setTopic(e.target.value)}
         />
         <Button onClick={run} disabled={busy || !topic.trim()}>
-          {busy ? <Loader2 className="h-4 w-4 animate-spin" /> : "Generate"}
+          {busy ? <Loader2 className="h-4 w-4 animate-spin" /> : "Gerar"}
         </Button>
       </div>
       {output && (
         <div className="mt-4 rounded-lg bg-surface p-4">
           <div className="mb-2 flex items-center justify-between">
-            <Label className="text-xs uppercase tracking-wider text-muted-foreground">Result</Label>
+            <Label className="text-xs uppercase tracking-wider text-muted-foreground">Resultado</Label>
             <Button size="sm" variant="ghost" onClick={() => copy(output)}>
-              <Copy className="mr-1 h-3 w-3" /> Copy
+              <Copy className="mr-1 h-3 w-3" /> Copiar
             </Button>
           </div>
           <div className="text-base">{output}</div>
@@ -1932,7 +1932,7 @@ function ExportSection(props: {
   }
 
   async function downloadZip() {
-    toast.message("Building bundle…");
+    toast.message("Montando pacote…");
     // Collect downloadable font URLs from open-licensed fonts
     const urls: string[] = [];
     for (const f of props.fonts ?? []) {
@@ -1995,9 +1995,9 @@ function ExportSection(props: {
     try {
       const r = await setShare({ data: { kitId: props.kitId, ownerToken, isPublic: next } });
       props.onShareChange({ is_public: r.is_public, share_token: r.share_token });
-      toast.success(next ? "Public link enabled" : "Public link disabled");
+      toast.success(next ? "Link público ativado" : "Link público desativado");
     } catch (e: any) {
-      toast.error(e?.message ?? "Failed to update share");
+      toast.error(e?.message ?? "Falha ao atualizar compartilhamento");
     } finally {
       setShareBusy(false);
     }
@@ -2012,10 +2012,10 @@ function ExportSection(props: {
     <div className="space-y-6">
       <div className="grid gap-3 rounded-xl border border-border bg-card p-6 sm:grid-cols-2">
         <Button size="lg" onClick={downloadZip}>
-          <Package className="mr-2 h-4 w-4" /> Download full kit (.zip)
+          <Package className="mr-2 h-4 w-4" /> Baixar kit completo (.zip)
         </Button>
         <Button size="lg" variant="outline" onClick={downloadPDF}>
-          <Download className="mr-2 h-4 w-4" /> Brand guide (.pdf)
+          <Download className="mr-2 h-4 w-4" /> Guia de marca (.pdf)
         </Button>
       </div>
 
@@ -2024,10 +2024,10 @@ function ExportSection(props: {
           <div className="flex items-center justify-between">
             <div>
               <h3 className="flex items-center gap-2 font-semibold">
-                <Share2 className="h-4 w-4" /> Public share link
+                <Share2 className="h-4 w-4" /> Link público de compartilhamento
               </h3>
               <p className="mt-1 text-sm text-muted-foreground">
-                Anyone with the link can view this kit (read-only).
+                Qualquer pessoa com o link pode visualizar este kit (somente leitura).
               </p>
             </div>
             <Switch checked={props.isPublic} onCheckedChange={toggleShare} disabled={shareBusy} />
@@ -2044,11 +2044,11 @@ function ExportSection(props: {
       )}
 
       <div className="grid gap-6 lg:grid-cols-2">
-        <ExportBlock title="Design tokens (W3C JSON)" content={tokensJson} filename={`${base}-tokens.json`} />
-        <ExportBlock title="Tailwind v4 theme" content={tailwind} filename={`${base}-tailwind.css`} />
-        <ExportBlock title="CSS variables" content={css} filename={`${base}.css`} />
+        <ExportBlock title="Tokens de design (W3C JSON)" content={tokensJson} filename={`${base}-tokens.json`} />
+        <ExportBlock title="Tema Tailwind v4" content={tailwind} filename={`${base}-tailwind.css`} />
+        <ExportBlock title="Variáveis CSS" content={css} filename={`${base}.css`} />
         <ExportBlock title="Tokens Studio (Figma)" content={studio} filename={`${base}-tokens-studio.json`} />
-        <ExportBlock title="Brand voice (.md)" content={voiceMd} filename={`${base}-voice.md`} />
+        <ExportBlock title="Voz da marca (.md)" content={voiceMd} filename={`${base}-voice.md`} />
       </div>
     </div>
   );
@@ -2065,10 +2065,10 @@ function ExportBlock({ title, content, filename }: { title: string; content: str
         <h3 className="min-w-0 break-words text-sm font-semibold sm:text-base">{title}</h3>
         <div className="flex gap-2">
           <Button size="sm" variant="outline" onClick={() => copy(content)}>
-            Copy
+            Copiar
           </Button>
           <Button size="sm" onClick={download}>
-            Download
+            Baixar
           </Button>
         </div>
       </div>
@@ -2095,12 +2095,12 @@ type FailureDetails = {
 };
 
 const CAUSE_LABELS: Record<string, string> = {
-  scrape_failed: "Source could not be reached",
-  ai_failed: "Brand model could not parse the page",
-  ai_rate_limit: "Brand model rate-limited",
-  ai_credits_exhausted: "Brand model credits exhausted",
-  parse_failed: "Page returned no usable signal",
-  unknown: "Cause unknown",
+  scrape_failed: "Não foi possível acessar a fonte",
+  ai_failed: "O modelo de marca não conseguiu interpretar a página",
+  ai_rate_limit: "Modelo de marca com limite de requisições atingido",
+  ai_credits_exhausted: "Créditos do modelo de marca esgotados",
+  parse_failed: "A página não retornou sinal utilizável",
+  unknown: "Causa desconhecida",
 };
 
 function FailurePanel({
@@ -2218,7 +2218,7 @@ function FailurePanel({
         const status = details?.status ?? null;
         const message = details?.message ?? null;
         if (!code && status == null && !message) return null;
-        const causeText = code ? CAUSE_LABELS[code] ?? "Cause unknown" : null;
+        const causeText = code ? CAUSE_LABELS[code] ?? "Causa desconhecida" : null;
         return (
           <details
             style={{
@@ -2244,7 +2244,7 @@ function FailurePanel({
             >
               <span className="fp-marker fp-marker-closed" style={{ marginRight: 12 }}>[ + ]</span>
               <span className="fp-marker fp-marker-open" style={{ marginRight: 12 }}>[ − ]</span>
-              What happened
+              O que aconteceu
             </summary>
             <div
               style={{
@@ -2260,7 +2260,7 @@ function FailurePanel({
             >
               {causeText && (
                 <>
-                  <span style={{ opacity: 0.6, letterSpacing: "0.18em", textTransform: "uppercase", fontSize: 12 }}>Cause</span>
+                  <span style={{ opacity: 0.6, letterSpacing: "0.18em", textTransform: "uppercase", fontSize: 12 }}>Causa</span>
                   <span style={{ wordBreak: "break-word" }}>{causeText}</span>
                 </>
               )}
@@ -2272,7 +2272,7 @@ function FailurePanel({
               )}
               {message && (
                 <>
-                  <span style={{ opacity: 0.6, letterSpacing: "0.18em", textTransform: "uppercase", fontSize: 12 }}>Message</span>
+                  <span style={{ opacity: 0.6, letterSpacing: "0.18em", textTransform: "uppercase", fontSize: 12 }}>Mensagem</span>
                   <span style={{ wordBreak: "break-word" }}>{message}</span>
                 </>
               )}
@@ -2300,7 +2300,7 @@ function FailurePanel({
               marginBottom: 12,
             }}
           >
-            // NEW SOURCE URL
+            // NOVA URL DE ORIGEM
           </div>
           <input
             type="url"
@@ -2310,7 +2310,7 @@ function FailurePanel({
               if (e.key === "Enter" && !urlEditor.busy) urlEditor.onSubmit();
               if (e.key === "Escape") urlEditor.onCancel();
             }}
-            placeholder="https://example.com"
+            placeholder="https://exemplo.com"
             autoFocus
             spellCheck={false}
             style={{
@@ -2356,7 +2356,7 @@ function FailurePanel({
                 e.currentTarget.style.color = ink;
               }}
             >
-              {urlEditor.busy ? "[ RETRYING… ]" : "[ EXTRACT FROM URL ]"}
+              {urlEditor.busy ? "[ TENTANDO NOVAMENTE… ]" : "[ EXTRAIR DA URL ]"}
             </button>
             <button
               type="button"
@@ -2378,7 +2378,7 @@ function FailurePanel({
               onMouseEnter={(e) => { if (!urlEditor.busy) e.currentTarget.style.borderColor = ink; }}
               onMouseLeave={(e) => { e.currentTarget.style.borderColor = hair; }}
             >
-              [ CANCEL ]
+              [ CANCELAR ]
             </button>
           </div>
           <p
@@ -2392,11 +2392,11 @@ function FailurePanel({
               marginTop: 16,
             }}
           >
-            Different source type? Use{" "}
+            Outro tipo de fonte? Use{" "}
             <Link to="/" style={{ color: ink, textDecoration: "underline" }}>
-              [ START OVER ]
+              [ RECOMEÇAR ]
             </Link>{" "}
-            to upload a PDF or paste image links.
+            para enviar um PDF ou colar links de imagens.
           </p>
         </div>
       )}
@@ -2477,7 +2477,7 @@ function FailurePanel({
             e.currentTarget.style.borderColor = hair;
           }}
         >
-          [ START OVER ]
+          [ RECOMEÇAR ]
         </Link>
       </div>
     </div>

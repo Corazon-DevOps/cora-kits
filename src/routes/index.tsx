@@ -1,17 +1,31 @@
-import { createFileRoute, Link } from "@tanstack/react-router";
-import { BookOpen } from "lucide-react";
+import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
+import { BookOpen, LogOut } from "lucide-react";
 import { IngestionPanel } from "@/components/ingestion-panel";
 import { RecentKits } from "@/components/recent-kits";
 import { StartHereButton } from "@/components/start-here-button";
+import { useAuth } from "@/lib/auth";
 
 export const Route = createFileRoute("/")({
   head: () => ({
     meta: [
-      { title: "Brand DNA — extract any brand's design system" },
+      { title: "Cora Extrator — extraia a identidade visual de qualquer site" },
       {
         name: "description",
         content:
-          "Paste a URL or drop assets. Get the palette, type, voice, and tokens — ready for your next pitch deck or build.",
+          "Cole uma URL ou envie arquivos. Receba paleta, tipografia, voz e tokens — prontos para sua próxima apresentação ou projeto.",
+      },
+      { property: "og:title", content: "Cora Extrator — a identidade visual de qualquer site" },
+      {
+        property: "og:description",
+        content:
+          "Cole uma URL ou envie arquivos. Receba paleta, tipografia, voz e tokens em segundos.",
+      },
+      { property: "og:type", content: "website" },
+      { name: "twitter:card", content: "summary_large_image" },
+      { name: "twitter:title", content: "Cora Extrator" },
+      {
+        name: "twitter:description",
+        content: "Paleta, tipografia, voz e tokens extraídos de qualquer site.",
       },
     ],
     links: [
@@ -27,26 +41,44 @@ export const Route = createFileRoute("/")({
 });
 
 function Landing() {
+  const { user, signOut } = useAuth();
+  const navigate = useNavigate();
+
   return (
     <>
       <style>{css}</style>
 
       <div className="page">
         <nav className="nav">
-          <Link to="/" className="brand">Brand Kit</Link>
+          <Link to="/" className="brand">Cora Extrator</Link>
           <div className="nav-center">
             <StartHereButton />
           </div>
           <div className="nav-links">
             <Link to="/library">
-              <BookOpen aria-hidden /> Library
+              <BookOpen aria-hidden /> Biblioteca
             </Link>
+            <Link to="/planos">Plano</Link>
+            {user ? (
+              <button
+                type="button"
+                className="nav-signout"
+                onClick={async () => {
+                  await signOut();
+                  navigate({ to: "/", replace: true });
+                }}
+              >
+                <LogOut aria-hidden /> Sair
+              </button>
+            ) : (
+              <Link to="/entrar">Entrar</Link>
+            )}
           </div>
         </nav>
 
         <main className="hero">
           <h1 className="headline">
-            Get their <em>brand.</em>
+            Pegue a <em>marca deles.</em>
           </h1>
 
           <div className="panel-mount">
@@ -59,6 +91,7 @@ function Landing() {
     </>
   );
 }
+
 
 const css = `
   :root {
@@ -123,6 +156,24 @@ const css = `
   }
   .nav-links a:hover { opacity: 1; color: var(--hanko); }
   .nav-links a svg { width: 13px; height: 13px; stroke-width: 1.5; }
+  .nav-signout {
+    appearance: none;
+    background: none;
+    border: 0;
+    padding: 0;
+    font: inherit;
+    letter-spacing: inherit;
+    text-transform: inherit;
+    color: var(--sumi);
+    opacity: 0.75;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+  }
+  .nav-signout:hover { opacity: 1; color: var(--hanko); }
+  .nav-signout svg { width: 13px; height: 13px; stroke-width: 1.5; }
+
 
   /* ---------- Hero ---------- */
   .hero {

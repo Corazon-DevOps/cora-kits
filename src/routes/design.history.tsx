@@ -10,8 +10,8 @@ import {
 export const Route = createFileRoute("/design/history")({
   head: () => ({
     meta: [
-      { title: "Design history — Brand DNA" },
-      { name: "description", content: "Versioned snapshots of the design system." },
+      { title: "Histórico de design — Cora Extrator" },
+      { name: "description", content: "Versões salvas do sistema de design." },
     ],
   }),
   component: HistoryPage,
@@ -50,7 +50,7 @@ function HistoryPage() {
       <main className="mx-auto max-w-5xl px-6 py-12">
         <div className="flex items-baseline justify-between">
           <div>
-            <p className={eyebrow}>// design system history</p>
+            <p className={eyebrow}>// histórico do sistema de design</p>
             <h1
               className="mt-2"
               style={{
@@ -60,14 +60,14 @@ function HistoryPage() {
                 letterSpacing: "-0.02em",
               }}
             >
-              History
+              Histórico
             </h1>
           </div>
           <Link
             to="/design"
             className={mono + " hover:opacity-70 transition-opacity"}
           >
-            ← Back to DESIGN.md
+            ← Voltar ao DESIGN.md
           </Link>
         </div>
 
@@ -79,7 +79,7 @@ function HistoryPage() {
           style={{ border: "1px solid #0A0A0A" }}
         >
           <label className="flex flex-col gap-2">
-            <span className={eyebrow}>// from</span>
+            <span className={eyebrow}>// de</span>
             <select
               value={aId}
               onChange={(e) => setAId(e.target.value)}
@@ -96,7 +96,7 @@ function HistoryPage() {
           </label>
           <span className="font-mono text-[14px] tracking-[0.2em] text-center">vs</span>
           <label className="flex flex-col gap-2">
-            <span className={eyebrow}>// to</span>
+            <span className={eyebrow}>// para</span>
             <select
               value={bId}
               onChange={(e) => setBId(e.target.value)}
@@ -122,7 +122,7 @@ function HistoryPage() {
               color: "var(--background)",
             }}
           >
-            [ Diff ]
+            [ Diferença ]
           </button>
         </div>
 
@@ -130,11 +130,11 @@ function HistoryPage() {
         <ul className="mt-12" style={{ borderTop: "1px solid rgba(10,10,10,0.25)" }}>
           {busy ? (
             <li className="py-8">
-              <p className={eyebrow}>Loading…</p>
+              <p className={eyebrow}>Carregando…</p>
             </li>
           ) : versions.length === 0 ? (
             <li className="py-8">
-              <p className={eyebrow}>No snapshots yet.</p>
+              <p className={eyebrow}>Nenhuma versão ainda.</p>
             </li>
           ) : (
             versions.map((v) => (
@@ -166,7 +166,7 @@ function HistoryPage() {
                   search={{ a: v.id, b: aId && aId !== v.id ? aId : (versions[1]?.id ?? v.id) }}
                   className={mono + " hover:opacity-70 transition-opacity"}
                 >
-                  [ View diff →
+                  [ Ver diferença →
                 </Link>
               </li>
             ))

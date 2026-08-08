@@ -1,13 +1,13 @@
 import { useEffect, useState } from "react";
 
 const STAGES = [
-  { label: "Reading the source", detail: "Fetching markup, branding metadata, screenshots" },
-  { label: "Sampling the palette", detail: "Identifying primary, accent, surface, text" },
-  { label: "Reading the type", detail: "Extracting families, weights, scale" },
-  { label: "Listening for voice", detail: "Tone, vocabulary, do's and don'ts" },
-  { label: "Collecting marks", detail: "Logos, favicons, social images" },
-  { label: "Inferring tokens", detail: "Spacing, radius, motion, shadow" },
-  { label: "Composing the kit", detail: "Sorting, naming, scoring contrast" },
+  { label: "Lendo a fonte", detail: "Buscando markup, metadados de marca, capturas de tela" },
+  { label: "Amostrando a paleta", detail: "Identificando cores primárias, de destaque, superfície e texto" },
+  { label: "Lendo a tipografia", detail: "Extraindo famílias, pesos, escala" },
+  { label: "Ouvindo a voz", detail: "Tom, vocabulário, o que fazer e evitar" },
+  { label: "Coletando marcas", detail: "Logos, favicons, imagens sociais" },
+  { label: "Inferindo tokens", detail: "Espaçamento, raio, movimento, sombra" },
+  { label: "Compondo o kit", detail: "Organizando, nomeando, avaliando contraste" },
 ];
 
 // Shared ticker so every <ExtractionProgress /> instance shows the same stage.
@@ -53,7 +53,7 @@ export function ExtractionProgress({
     <div className="rounded-2xl border border-[color:var(--border-subtle)] bg-[color:var(--surface-raised)] p-12">
       <div className="mx-auto max-w-md text-center">
         <div className="font-mono text-[10px] uppercase tracking-[0.28em] text-muted-foreground">
-          // 02 — extraction in progress
+          // 02 — extração em andamento
         </div>
         <h2
           key={stage.label}

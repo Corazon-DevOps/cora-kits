@@ -19,8 +19,8 @@ export const Route = createFileRoute("/design/history/diff")({
   validateSearch: (search) => searchSchema.parse(search),
   head: () => ({
     meta: [
-      { title: "Design diff — Brand DNA" },
-      { name: "description", content: "Structured diff between two design system snapshots." },
+      { title: "Diferença de design — Cora Extrator" },
+      { name: "description", content: "Diferença estruturada entre duas versões do sistema de design." },
     ],
   }),
   component: DiffPage,
@@ -46,7 +46,7 @@ function DiffPage() {
   useEffect(() => {
     run({ data: { aId: a, bId: b } })
       .then((res) => setData(res as DiffResult))
-      .catch((e) => setError(e instanceof Error ? e.message : "Failed to diff"));
+      .catch((e) => setError(e instanceof Error ? e.message : "Falha ao comparar"));
   }, [a, b, run]);
 
   const summary = data ? summarizeDiff(data.diff) : null;
@@ -57,7 +57,7 @@ function DiffPage() {
       <main className="mx-auto max-w-5xl px-6 py-12">
         <div className="flex items-baseline justify-between">
           <div>
-            <p className={eyebrow}>// structured diff</p>
+            <p className={eyebrow}>// diferença estruturada</p>
             <h1
               className="mt-2"
               style={{
@@ -75,7 +75,7 @@ function DiffPage() {
             </h1>
           </div>
           <Link to="/design/history" className={mono + " hover:opacity-70 transition-opacity"}>
-            ← History
+            ← Histórico
           </Link>
         </div>
 
@@ -90,13 +90,13 @@ function DiffPage() {
         {summary ? (
           <div className="mt-6 flex items-center gap-8">
             <p className={eyebrow}>
-              {summary.changed} changed · {summary.added} added · {summary.removed} removed
+              {summary.changed} alterados · {summary.added} adicionados · {summary.removed} removidos
             </p>
             <button
               onClick={() => setShowUnchanged((v) => !v)}
               className={mono + " hover:opacity-70 transition-opacity"}
             >
-              [ {showUnchanged ? "Hide" : "Show"} unchanged ]
+              [ {showUnchanged ? "Ocultar" : "Mostrar"} inalterados ]
             </button>
           </div>
         ) : null}
@@ -117,7 +117,7 @@ function DiffPage() {
                   </h2>
                   {visible.length === 0 ? (
                     <p className={eyebrow + " py-4"}>
-                      — no {showUnchanged ? "" : "changed "}entries
+                      — nenhum item {showUnchanged ? "" : "alterado "}
                     </p>
                   ) : (
                     <ul>
@@ -131,7 +131,7 @@ function DiffPage() {
             })}
           </div>
         ) : (
-          !error && <p className={eyebrow + " mt-8"}>Loading diff…</p>
+          !error && <p className={eyebrow + " mt-8"}>Carregando diferença…</p>
         )}
       </main>
     </div>

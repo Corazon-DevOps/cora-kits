@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useRef, useState } from "react";
-import { useNavigate } from "@tanstack/react-router";
+import { useNavigate, Link } from "@tanstack/react-router";
 import { useServerFn } from "@tanstack/react-start";
 import { toast } from "sonner";
 import { useAuth } from "@/lib/auth";
@@ -12,6 +12,7 @@ import { ExtractionProgress } from "@/components/extraction-progress";
 const ACCEPT = ".pdf,.png,.jpg,.jpeg,.webp,.svg,image/*,application/pdf";
 const MAX_FILES = 10;
 const MAX_BYTES = 20 * 1024 * 1024;
+
 
 export function IngestionPanel() {
   const navigate = useNavigate();
@@ -68,7 +69,7 @@ export function IngestionPanel() {
     const next: File[] = [];
     for (const f of Array.from(incoming)) {
       if (f.size > MAX_BYTES) {
-        toast.error(`"${f.name}" exceeds 20 MB`);
+        toast.error(`"${f.name}" passa de 20 MB`);
         continue;
       }
       next.push(f);
@@ -76,11 +77,12 @@ export function IngestionPanel() {
     setFiles((prev) => {
       const merged = [...prev, ...next].slice(0, MAX_FILES);
       if (prev.length + next.length > MAX_FILES) {
-        toast.error(`Max ${MAX_FILES} files`);
+        toast.error(`Máximo de ${MAX_FILES} arquivos`);
       }
       return merged;
     });
   }, []);
+
 
   // Window-wide drag overlay
   useEffect(() => {
@@ -119,13 +121,13 @@ export function IngestionPanel() {
   useEffect(() => {
     if (!busy) return;
     const cycle = [
-      "Reading source",
-      "Sampling palette",
-      "Reading type",
-      "Listening for voice",
-      "Collecting marks",
-      "Inferring tokens",
-      "Composing kit",
+      "Lendo a fonte",
+      "Amostrando a paleta",
+      "Lendo a tipografia",
+      "Ouvindo a voz",
+      "Coletando marcas",
+      "Inferindo tokens",
+      "Compondo o kit",
     ];
     setStage(cycle[0]);
     let i = 0;
@@ -144,15 +146,20 @@ export function IngestionPanel() {
   async function submit(e?: React.FormEvent) {
     e?.preventDefault();
     if (busy) return;
+    if (!user) {
+      toast.error("Crie sua conta para extrair — a primeira extração é gratuita.");
+      navigate({ to: "/entrar", search: { redirect: "/" } });
+      return;
+    }
     if (!ready) {
-      toast.error("Initializing — one moment");
+      toast.error("Inicializando — um momento");
       return;
     }
     const trimmed = url.trim();
     const hasUrl = trimmed.length > 0;
     const hasFiles = files.length > 0;
     if (!hasUrl && !hasFiles) {
-      toast.error("Paste a URL or drop a file");
+      toast.error("Cole uma URL ou envie um arquivo");
       return;
     }
     signalIntent();
@@ -162,13 +169,13 @@ export function IngestionPanel() {
       try {
         new URL(normUrl);
       } catch {
-        toast.error("Invalid URL");
+        toast.error("URL inválida");
         return;
       }
     }
 
     setBusy(true);
-    setStage(hasFiles ? "Uploading sources" : "Creating kit");
+    setStage(hasFiles ? "Enviando arquivos" : "Criando kit");
     try {
       const sourceType: "url" | "upload" | "mixed" =
         hasUrl && hasFiles ? "mixed" : hasUrl ? "url" : "upload";
@@ -188,27 +195,33 @@ export function IngestionPanel() {
         pdfTexts = res.pdfTexts.length ? res.pdfTexts : undefined;
       }
 
-      setStage("Extracting brand");
+      setStage("Extraindo a marca");
       const extracted = await extract({
         data: { kitId: id, ownerToken, url: normUrl, imageUrls, pdfTexts },
       });
       if (!extracted.ok) {
-        throw new Error(extracted.error ?? "Extraction failed");
+        if ((extracted as any).requiresSubscription) {
+          toast.error(extracted.error ?? "Assine para continuar extraindo.");
+          navigate({ to: "/planos" });
+          return;
+        }
+        throw new Error(extracted.error ?? "A extração falhou");
       }
       navigate({ to: "/kit/$kitId", params: { kitId: id } });
     } catch (err: any) {
-      toast.error(err?.message ?? "Extraction failed");
+      toast.error(err?.message ?? "A extração falhou");
     } finally {
       setBusy(false);
       setStage("");
     }
   }
 
+
   return (
     <>
       <style>{panelCss}</style>
 
-      <form className="ingest" onSubmit={submit} aria-label="Brand ingestion">
+      <form className="ingest" onSubmit={submit} aria-label="Extração de marca">
         <div className="ingest-row">
           <span className="ingest-prefix" aria-hidden="true">URL /</span>
           <input
@@ -216,7 +229,7 @@ export function IngestionPanel() {
             inputMode="url"
             autoComplete="off"
             spellCheck={false}
-            placeholder="paste any website"
+            placeholder="cole qualquer site"
             value={url}
             onChange={(e) => {
               signalIntent();
@@ -225,28 +238,36 @@ export function IngestionPanel() {
             onFocus={signalIntent}
             disabled={busy || !ready}
             className="ingest-input"
-            aria-label="Website URL"
+            aria-label="Endereço do site"
           />
-          <button type="submit" className="ingest-go" disabled={busy || !ready} aria-label="Extract">
+          <button type="submit" className="ingest-go" disabled={busy || !ready} aria-label="Extrair">
             {!ready ? (
               <span className="ingest-go-label is-busy">
-                [ INITIALIZING<span className="ingest-dots" aria-hidden="true"><span>.</span><span>.</span><span>.</span></span> ]
+                [ INICIANDO<span className="ingest-dots" aria-hidden="true"><span>.</span><span>.</span><span>.</span></span> ]
               </span>
             ) : busy ? (
               <span className="ingest-go-label is-busy">
-                [ EXTRACTING<span className="ingest-dots" aria-hidden="true"><span>.</span><span>.</span><span>.</span></span> ]
+                [ EXTRAINDO<span className="ingest-dots" aria-hidden="true"><span>.</span><span>.</span><span>.</span></span> ]
               </span>
             ) : (
-              <span key={stageTick} className="ingest-go-label">[ EXTRACT → ]</span>
+              <span key={stageTick} className="ingest-go-label">[ EXTRAIR → ]</span>
             )}
           </button>
         </div>
 
+        {!user && (
+          <p className="ingest-gate">
+            <Link to="/entrar" search={{ redirect: "/" }}>Crie sua conta</Link> para extrair — a
+            primeira extração é gratuita, depois R$ 15/mês.
+          </p>
+        )}
+
         {busy && (
           <div className="ingest-progress">
-            <ExtractionProgress variant="panel" hint="Usually 15–30 seconds" />
+            <ExtractionProgress variant="panel" hint="Normalmente 15–30 segundos" />
           </div>
         )}
+
 
         <div
           className={`ingest-zone${zoneHover ? " is-hover" : ""}`}
@@ -271,15 +292,16 @@ export function IngestionPanel() {
             setZoneHover(false);
             if (e.dataTransfer.files?.length) addFiles(e.dataTransfer.files);
           }}
-          aria-label="Drop assets or click to browse"
+          aria-label="Solte arquivos ou clique para escolher"
         >
-          <span className="ingest-zone-eyebrow">// drop zone</span>
+          <span className="ingest-zone-eyebrow">// área de upload</span>
           <span className="ingest-zone-title">
-            Drag &amp; drop a deck, logo, screenshot, or PDF
+            Arraste e solte uma apresentação, logo, print ou PDF
           </span>
           <span className="ingest-zone-meta">
-            — or <u>click to browse</u> · PDF · PNG · JPG · WEBP · SVG · 20 MB each
+            — ou <u>clique para escolher</u> · PDF · PNG · JPG · WEBP · SVG · 20 MB cada
           </span>
+
           <input
             ref={inputRef}
             type="file"
@@ -302,7 +324,7 @@ export function IngestionPanel() {
                 <button
                   type="button"
                   onClick={() => removeFile(i)}
-                  aria-label={`Remove ${f.name}`}
+                  aria-label={`Remover ${f.name}`}
                   disabled={busy}
                 >
                   ×
@@ -316,11 +338,12 @@ export function IngestionPanel() {
       {dragActive && (
         <div className="ingest-overlay" aria-hidden="true">
           <div className="ingest-overlay-card">
-            <span className="ingest-overlay-eyebrow">// drop to ingest</span>
-            <span className="ingest-overlay-title">Release file</span>
+            <span className="ingest-overlay-eyebrow">// solte para enviar</span>
+            <span className="ingest-overlay-title">Solte o arquivo</span>
             <span className="ingest-overlay-meta">
-              PDF · PNG · JPG · WEBP · SVG — max {MAX_FILES} files, 20 MB each
+              PDF · PNG · JPG · WEBP · SVG — até {MAX_FILES} arquivos, 20 MB cada
             </span>
+
           </div>
         </div>
       )}
@@ -434,6 +457,21 @@ const panelCss = `
   }
 
   .ingest-progress { margin-top: 6px; }
+
+  .ingest-gate {
+    margin: 0;
+    text-align: center;
+    font-family: 'Courier Prime', monospace;
+    font-size: 11px;
+    letter-spacing: 0.08em;
+    color: rgba(10,10,10,0.6);
+  }
+  .ingest-gate a {
+    color: #8B1A1A;
+    text-decoration: underline;
+    text-underline-offset: 3px;
+  }
+
 
   .ingest-zone {
     display: flex;
