@@ -69,7 +69,7 @@ export function IngestionPanel() {
     const next: File[] = [];
     for (const f of Array.from(incoming)) {
       if (f.size > MAX_BYTES) {
-        toast.error(`"${f.name}" exceeds 20 MB`);
+        toast.error(`"${f.name}" passa de 20 MB`);
         continue;
       }
       next.push(f);
@@ -77,11 +77,12 @@ export function IngestionPanel() {
     setFiles((prev) => {
       const merged = [...prev, ...next].slice(0, MAX_FILES);
       if (prev.length + next.length > MAX_FILES) {
-        toast.error(`Max ${MAX_FILES} files`);
+        toast.error(`Máximo de ${MAX_FILES} arquivos`);
       }
       return merged;
     });
   }, []);
+
 
   // Window-wide drag overlay
   useEffect(() => {
