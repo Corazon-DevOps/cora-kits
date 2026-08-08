@@ -121,13 +121,13 @@ export function IngestionPanel() {
   useEffect(() => {
     if (!busy) return;
     const cycle = [
-      "Reading source",
-      "Sampling palette",
-      "Reading type",
-      "Listening for voice",
-      "Collecting marks",
-      "Inferring tokens",
-      "Composing kit",
+      "Lendo a fonte",
+      "Amostrando a paleta",
+      "Lendo a tipografia",
+      "Ouvindo a voz",
+      "Coletando marcas",
+      "Inferindo tokens",
+      "Compondo o kit",
     ];
     setStage(cycle[0]);
     let i = 0;
@@ -146,15 +146,20 @@ export function IngestionPanel() {
   async function submit(e?: React.FormEvent) {
     e?.preventDefault();
     if (busy) return;
+    if (!user) {
+      toast.error("Crie sua conta para extrair — a primeira extração é gratuita.");
+      navigate({ to: "/entrar", search: { redirect: "/" } });
+      return;
+    }
     if (!ready) {
-      toast.error("Initializing — one moment");
+      toast.error("Inicializando — um momento");
       return;
     }
     const trimmed = url.trim();
     const hasUrl = trimmed.length > 0;
     const hasFiles = files.length > 0;
     if (!hasUrl && !hasFiles) {
-      toast.error("Paste a URL or drop a file");
+      toast.error("Cole uma URL ou envie um arquivo");
       return;
     }
     signalIntent();
@@ -164,13 +169,13 @@ export function IngestionPanel() {
       try {
         new URL(normUrl);
       } catch {
-        toast.error("Invalid URL");
+        toast.error("URL inválida");
         return;
       }
     }
 
     setBusy(true);
-    setStage(hasFiles ? "Uploading sources" : "Creating kit");
+    setStage(hasFiles ? "Enviando arquivos" : "Criando kit");
     try {
       const sourceType: "url" | "upload" | "mixed" =
         hasUrl && hasFiles ? "mixed" : hasUrl ? "url" : "upload";
@@ -190,21 +195,27 @@ export function IngestionPanel() {
         pdfTexts = res.pdfTexts.length ? res.pdfTexts : undefined;
       }
 
-      setStage("Extracting brand");
+      setStage("Extraindo a marca");
       const extracted = await extract({
         data: { kitId: id, ownerToken, url: normUrl, imageUrls, pdfTexts },
       });
       if (!extracted.ok) {
-        throw new Error(extracted.error ?? "Extraction failed");
+        if ((extracted as any).requiresSubscription) {
+          toast.error(extracted.error ?? "Assine para continuar extraindo.");
+          navigate({ to: "/planos" });
+          return;
+        }
+        throw new Error(extracted.error ?? "A extração falhou");
       }
       navigate({ to: "/kit/$kitId", params: { kitId: id } });
     } catch (err: any) {
-      toast.error(err?.message ?? "Extraction failed");
+      toast.error(err?.message ?? "A extração falhou");
     } finally {
       setBusy(false);
       setStage("");
     }
   }
+
 
   return (
     <>
