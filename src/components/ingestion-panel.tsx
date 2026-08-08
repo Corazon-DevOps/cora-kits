@@ -458,6 +458,21 @@ const panelCss = `
 
   .ingest-progress { margin-top: 6px; }
 
+  .ingest-gate {
+    margin: 0;
+    text-align: center;
+    font-family: 'Courier Prime', monospace;
+    font-size: 11px;
+    letter-spacing: 0.08em;
+    color: rgba(10,10,10,0.6);
+  }
+  .ingest-gate a {
+    color: #8B1A1A;
+    text-decoration: underline;
+    text-underline-offset: 3px;
+  }
+
+
   .ingest-zone {
     display: flex;
     flex-direction: column;
