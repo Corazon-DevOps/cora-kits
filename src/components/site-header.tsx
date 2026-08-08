@@ -1,5 +1,5 @@
 import { Link, useNavigate } from "@tanstack/react-router";
-import { BookOpen, LogOut } from "lucide-react";
+import { BookOpen, LogOut, Puzzle } from "lucide-react";
 import { StartHereButton } from "@/components/start-here-button";
 import { useAuth } from "@/lib/auth";
 
