@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useRef, useState } from "react";
-import { useNavigate } from "@tanstack/react-router";
+import { useNavigate, Link } from "@tanstack/react-router";
 import { useServerFn } from "@tanstack/react-start";
 import { toast } from "sonner";
 import { useAuth } from "@/lib/auth";
@@ -12,6 +12,7 @@ import { ExtractionProgress } from "@/components/extraction-progress";
 const ACCEPT = ".pdf,.png,.jpg,.jpeg,.webp,.svg,image/*,application/pdf";
 const MAX_FILES = 10;
 const MAX_BYTES = 20 * 1024 * 1024;
+
 
 export function IngestionPanel() {
   const navigate = useNavigate();
