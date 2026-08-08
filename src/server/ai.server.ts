@@ -247,7 +247,7 @@ export async function firecrawlScrape(url: string) {
         method: "POST",
         headers: {
           Authorization: `Bearer ${lovableKey}`,
-          "X-Connection-Api-Key": firecrawlKey,
+          "X-Connection-Api-Key": firecrawlKey!,
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
