@@ -1,6 +1,6 @@
+import { useEffect, useState } from "react";
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useServerFn } from "@tanstack/react-start";
-import { useQuery } from "@tanstack/react-query";
 import { toast } from "sonner";
 import { SiteHeader } from "@/components/site-header";
 import { useAuth } from "@/lib/auth";
@@ -27,15 +27,35 @@ export const Route = createFileRoute("/planos")({
   component: Planos,
 });
 
+type Entitlement = {
+  subscribed: boolean;
+  extractionsUsed: number;
+  freeLimit: number;
+  canExtract: boolean;
+  currentPeriodEnd: string | null;
+};
+
 function Planos() {
   const { user, loading } = useAuth();
   const fetchEntitlement = useServerFn(getEntitlement);
+  const [entitlement, setEntitlement] = useState<Entitlement | null>(null);
 
-  const { data: entitlement } = useQuery({
-    queryKey: ["entitlement", user?.id],
-    queryFn: () => fetchEntitlement(),
-    enabled: !!user,
-  });
+  useEffect(() => {
+    if (!user) {
+      setEntitlement(null);
+      return;
+    }
+    let cancelled = false;
+    fetchEntitlement()
+      .then((e) => {
+        if (!cancelled) setEntitlement(e as Entitlement);
+      })
+      .catch(() => {});
+    return () => {
+      cancelled = true;
+    };
+  }, [user, fetchEntitlement]);
+
 
   return (
     <div className="min-h-screen bg-background">
