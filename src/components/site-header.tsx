@@ -38,8 +38,8 @@ export function SiteHeader() {
             <BookOpen className="h-3.5 w-3.5" strokeWidth={1.5} aria-hidden />
             Biblioteca
           </Link>
-          <Link to="/planos" className={navLinkClass}>
-            Plano
+          <Link to="/apoiar" className={navLinkClass}>
+            Apoiar
           </Link>
           {user ? (
             <button type="button" onClick={handleSignOut} className={navLinkClass}>

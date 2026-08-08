@@ -131,7 +131,7 @@ function AuthPage() {
           <p className="auth-lede">
             {mode === "entrar"
               ? "Acesse sua conta para extrair identidades visuais."
-              : "Crie sua conta e ganhe 1 extração gratuita."}
+              : "Crie sua conta — o Cora Extrator é gratuito."}
           </p>
 
           {sent ? (

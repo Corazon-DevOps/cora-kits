@@ -200,11 +200,6 @@ export function IngestionPanel() {
         data: { kitId: id, ownerToken, url: normUrl, imageUrls, pdfTexts },
       });
       if (!extracted.ok) {
-        if ((extracted as any).requiresSubscription) {
-          toast.error(extracted.error ?? "Assine para continuar extraindo.");
-          navigate({ to: "/planos" });
-          return;
-        }
         throw new Error(extracted.error ?? "A extração falhou");
       }
       navigate({ to: "/kit/$kitId", params: { kitId: id } });
