@@ -324,7 +324,7 @@ export function IngestionPanel() {
                 <button
                   type="button"
                   onClick={() => removeFile(i)}
-                  aria-label={`Remove ${f.name}`}
+                  aria-label={`Remover ${f.name}`}
                   disabled={busy}
                 >
                   ×
@@ -338,11 +338,12 @@ export function IngestionPanel() {
       {dragActive && (
         <div className="ingest-overlay" aria-hidden="true">
           <div className="ingest-overlay-card">
-            <span className="ingest-overlay-eyebrow">// drop to ingest</span>
-            <span className="ingest-overlay-title">Release file</span>
+            <span className="ingest-overlay-eyebrow">// solte para enviar</span>
+            <span className="ingest-overlay-title">Solte o arquivo</span>
             <span className="ingest-overlay-meta">
-              PDF · PNG · JPG · WEBP · SVG — max {MAX_FILES} files, 20 MB each
+              PDF · PNG · JPG · WEBP · SVG — até {MAX_FILES} arquivos, 20 MB cada
             </span>
+
           </div>
         </div>
       )}
