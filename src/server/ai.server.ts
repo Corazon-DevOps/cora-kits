@@ -289,7 +289,7 @@ export async function firecrawlMap(url: string, limit = 50): Promise<string[]> {
       method: "POST",
       headers: {
         Authorization: `Bearer ${lovableKey}`,
-        "X-Connection-Api-Key": firecrawlKey,
+        "X-Connection-Api-Key": firecrawlKey!,
         "Content-Type": "application/json",
       },
       body: JSON.stringify({ url, limit, includeSubdomains: false }),
