@@ -1,0 +1,117 @@
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="utf-8" />
+    <title>Cora Extrator</title>
+    <style>
+      * { box-sizing: border-box; }
+      body {
+        width: 340px;
+        margin: 0;
+        padding: 16px;
+        background: #f4efe6;
+        color: #0a0a0a;
+        font-family: "Courier New", monospace;
+      }
+      .brand {
+        font-size: 10px;
+        letter-spacing: 0.24em;
+        text-transform: uppercase;
+        opacity: 0.7;
+      }
+      h1 {
+        font-family: Georgia, "Times New Roman", serif;
+        font-weight: 400;
+        font-size: 26px;
+        line-height: 1.1;
+        margin: 6px 0 2px;
+      }
+      .host {
+        font-size: 11px;
+        opacity: 0.65;
+        word-break: break-all;
+        margin-bottom: 12px;
+      }
+      .label {
+        font-size: 9px;
+        letter-spacing: 0.2em;
+        text-transform: uppercase;
+        opacity: 0.55;
+        margin: 14px 0 6px;
+      }
+      .swatches { display: flex; flex-wrap: wrap; gap: 6px; }
+      .swatch {
+        width: 72px;
+        border: 1px solid rgba(10, 10, 10, 0.18);
+        border-radius: 8px;
+        overflow: hidden;
+        cursor: pointer;
+        background: none;
+        padding: 0;
+        font: inherit;
+      }
+      .swatch .chip { height: 34px; display: block; }
+      .swatch .hex {
+        display: block;
+        font-size: 9px;
+        padding: 4px 0;
+        background: rgba(255, 255, 255, 0.6);
+        letter-spacing: 0.06em;
+      }
+      .list { font-size: 12px; line-height: 1.6; margin: 0; padding: 0; list-style: none; }
+      .logo {
+        max-width: 100%;
+        max-height: 54px;
+        border: 1px solid rgba(10, 10, 10, 0.12);
+        border-radius: 8px;
+        background: #fff;
+        padding: 6px;
+      }
+      .actions { display: flex; flex-direction: column; gap: 8px; margin-top: 18px; }
+      button.act {
+        font-family: inherit;
+        font-size: 10px;
+        letter-spacing: 0.18em;
+        text-transform: uppercase;
+        padding: 11px 12px;
+        border-radius: 999px;
+        border: 1px solid rgba(10, 10, 10, 0.25);
+        background: rgba(255, 255, 255, 0.7);
+        cursor: pointer;
+      }
+      button.act.primary { background: #0a0a0a; color: #f4efe6; border-color: #0a0a0a; }
+      button.act:hover { border-color: rgba(10, 10, 10, 0.6); }
+      .status { font-size: 11px; margin-top: 10px; min-height: 14px; color: #8b1a1a; }
+      .empty { font-size: 12px; line-height: 1.6; }
+    </style>
+  </head>
+  <body>
+    <div class="brand">Cora Extrator</div>
+    <h1 id="title">Lendo a página…</h1>
+    <div class="host" id="host"></div>
+
+    <div id="content" hidden>
+      <div class="label">Paleta — clique para copiar</div>
+      <div class="swatches" id="swatches"></div>
+
+      <div class="label">Tipografia</div>
+      <ul class="list" id="fonts"></ul>
+
+      <div class="label">Escala</div>
+      <div class="list" id="scale"></div>
+
+      <div class="label" id="logoLabel" hidden>Marca</div>
+      <img class="logo" id="logo" hidden alt="Logo detectado" />
+    </div>
+
+    <div class="actions">
+      <button class="act" id="copyJson">Copiar tokens (JSON)</button>
+      <button class="act" id="copyCss">Copiar variáveis CSS</button>
+      <button class="act primary" id="openApp">Abrir no Cora Extrator</button>
+    </div>
+    <div class="status" id="status"></div>
+
+    <script src="scan.js"></script>
+    <script src="popup.js"></script>
+  </body>
+</html>
