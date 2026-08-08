@@ -12,10 +12,10 @@ import {
 export const Route = createFileRoute("/design")({
   head: () => ({
     meta: [
-      { title: "Design system — Brand DNA" },
+      { title: "Sistema de design — Cora Extrator" },
       {
         name: "description",
-        content: "The Invisible Instrument — design system source of truth.",
+        content: "O Instrumento Invisível — fonte da verdade do sistema de design.",
       },
     ],
   }),
@@ -65,7 +65,7 @@ function DesignPage() {
           setMarkdown(SEED_FALLBACK);
         }
       } catch (e) {
-        setError(e instanceof Error ? e.message : "Failed to load");
+        setError(e instanceof Error ? e.message : "Falha ao carregar");
       }
     })();
   }, [list, get]);
@@ -80,7 +80,7 @@ function DesignPage() {
       setEditing(false);
       setLabel("");
     } catch (e) {
-      setError(e instanceof Error ? e.message : "Failed to save");
+      setError(e instanceof Error ? e.message : "Falha ao salvar");
     } finally {
       setBusy(false);
     }
@@ -92,7 +92,7 @@ function DesignPage() {
       <main className="mx-auto max-w-5xl px-6 py-12">
         <div className="flex items-baseline justify-between">
           <div>
-            <p className={eyebrow}>// design system source of truth</p>
+            <p className={eyebrow}>// fonte da verdade do sistema de design</p>
             <h1
               className="mt-2"
               style={{
@@ -110,7 +110,7 @@ function DesignPage() {
               to="/design/history"
               className="font-mono text-[12px] uppercase tracking-[0.12em] hover:opacity-70 transition-opacity"
             >
-              [ History ]
+              [ Histórico ]
             </Link>
             {!editing ? (
               <button
@@ -118,7 +118,7 @@ function DesignPage() {
                 className={buttonClass}
                 style={{ border: "1px solid #0A0A0A" }}
               >
-                [ Edit ]
+                [ Editar ]
               </button>
             ) : (
               <button
@@ -128,7 +128,7 @@ function DesignPage() {
                 }}
                 className="font-mono text-[12px] uppercase tracking-[0.12em] hover:opacity-70 transition-opacity"
               >
-                × Cancel
+                × Cancelar
               </button>
             )}
           </div>
@@ -150,10 +150,10 @@ function DesignPage() {
 
         <p className={`${labelMono} mt-6`}>
           {versions.length > 0
-            ? `Viewing v${String(versions[0].version).padStart(2, "0")} · ${new Date(
+            ? `Vendo v${String(versions[0].version).padStart(2, "0")} · ${new Date(
                 versions[0].created_at,
               ).toLocaleString()}`
-            : "No snapshots yet — saving will create v01."}
+            : "Nenhuma versão ainda — salvar criará a v01."}
         </p>
 
         {editing ? (
@@ -161,7 +161,7 @@ function DesignPage() {
             <input
               value={label}
               onChange={(e) => setLabel(e.target.value)}
-              placeholder="optional label — e.g. tightened contrast"
+              placeholder="rótulo opcional — ex.: contraste ajustado"
               className="font-mono text-[13px] bg-transparent px-3 py-2 outline-none"
               style={{ border: "1px solid #0A0A0A" }}
             />
@@ -187,7 +187,7 @@ function DesignPage() {
                   color: "var(--background)",
                 }}
               >
-                [ {busy ? "Saving…" : "Save snapshot"} ]
+                [ {busy ? "Salvando…" : "Salvar versão"} ]
               </button>
             </div>
           </div>

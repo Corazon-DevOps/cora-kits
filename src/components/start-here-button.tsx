@@ -15,7 +15,7 @@ export function StartHereButton() {
         border: "1px solid rgba(10,10,10,0.18)",
       }}
     >
-      <span style={{ opacity: 0.75 }}>//</span> Start Here
+      <span style={{ opacity: 0.75 }}>//</span> Comece aqui
     </Link>
   );
 }

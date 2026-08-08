@@ -9,16 +9,16 @@ function NotFoundComponent() {
     <div className="flex min-h-screen items-center justify-center bg-background px-4">
       <div className="max-w-md text-center">
         <h1 className="text-7xl font-display">404</h1>
-        <h2 className="mt-4 text-xl font-semibold">Page not found</h2>
+        <h2 className="mt-4 text-xl font-semibold">Página não encontrada</h2>
         <p className="mt-2 text-sm text-muted-foreground">
-          The page you're looking for doesn't exist.
+          A página que você procura não existe.
         </p>
         <div className="mt-6">
           <Link
             to="/"
             className="inline-flex items-center justify-center rounded-md bg-primary px-4 py-2 text-sm font-medium text-primary-foreground hover:bg-primary/90"
           >
-            Go home
+            Ir para o início
           </Link>
         </div>
       </div>
@@ -26,37 +26,40 @@ function NotFoundComponent() {
   );
 }
 
+
 export const Route = createRootRoute({
   head: () => ({
     meta: [
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
-      { title: "Brand Kit" },
+      { title: "Cora Extrator — extraia a identidade visual de qualquer site" },
       {
         name: "description",
         content:
-          "Colors. Typography. Voice. Tokens. Extracted, structured, exported. Brand DNA turns any URL into a complete brand kit.",
+          "Cores, tipografia, voz e tokens extraídos de qualquer site em segundos. Pronto para usar no seu próximo projeto.",
       },
       {
         name: "keywords",
-        content: "brand kit, design system, color extraction, typography, brand voice, design tokens",
+        content:
+          "identidade visual, brand kit, design system, extrair cores, tipografia, voz da marca, design tokens",
       },
-      { property: "og:title", content: "Brand Kit" },
+      { property: "og:title", content: "Cora Extrator" },
       {
         property: "og:description",
-        content: "Colors. Typography. Voice. Tokens. Extracted, structured, exported.",
+        content: "Cores, tipografia, voz e tokens extraídos de qualquer site em segundos.",
       },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
-      { name: "twitter:title", content: "Brand Kit" },
-      { name: "description", content: "Get any site's full brand guide with logos, typography and voice just by entering a URL." },
-      { property: "og:description", content: "Get any site's full brand guide with logos, typography and voice just by entering a URL." },
-      { name: "twitter:description", content: "Get any site's full brand guide with logos, typography and voice just by entering a URL." },
-      { property: "og:image", content: "https://pub-bb2e103a32db4e198524a2e9ed8f35b4.r2.dev/b8fc70cb-7407-42ec-9f6b-76fa2169acf7/id-preview-820a7c05--51ec8462-5cd2-41c8-8fbc-3bd742256758.lovable.app-1778711854484.png" },
-      { name: "twitter:image", content: "https://pub-bb2e103a32db4e198524a2e9ed8f35b4.r2.dev/b8fc70cb-7407-42ec-9f6b-76fa2169acf7/id-preview-820a7c05--51ec8462-5cd2-41c8-8fbc-3bd742256758.lovable.app-1778711854484.png" },
+      { name: "twitter:title", content: "Cora Extrator" },
+      {
+        name: "twitter:description",
+        content: "Cores, tipografia, voz e tokens extraídos de qualquer site em segundos.",
+      },
     ],
     links: [
       { rel: "stylesheet", href: appCss },
+      { rel: "icon", type: "image/png", href: "/favicon.png" },
+
       { rel: "preconnect", href: "https://fonts.googleapis.com" },
       { rel: "preconnect", href: "https://fonts.gstatic.com", crossOrigin: "anonymous" },
       {
@@ -72,7 +75,7 @@ export const Route = createRootRoute({
 
 function RootShell({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en">
+    <html lang="pt-BR">
       <head>
         <HeadContent />
       </head>

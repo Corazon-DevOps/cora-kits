@@ -82,7 +82,7 @@ function LibraryPage() {
         }
       } catch (e: any) {
         // Keep any cached kits visible — only surface error if we have nothing.
-        if (!hydrated) toast.error(e?.message ?? "Failed to load kits");
+        if (!hydrated) toast.error(e?.message ?? "Falha ao carregar kits");
       } finally {
         setBusy(false);
       }
@@ -130,7 +130,7 @@ function LibraryPage() {
       await renameFn({ data: { kitId: k.id, ownerToken, name: next } });
       setKits((rows) => rows.map((r) => (r.id === k.id ? { ...r, name: next } : r)));
     } catch (e: any) {
-      toast.error(e?.message ?? "Rename failed");
+      toast.error(e?.message ?? "Falha ao renomear");
     }
   }
 
@@ -140,26 +140,26 @@ function LibraryPage() {
       const newKit = res?.kit;
       if (newKit) {
         setKits((rows) => [{ ...newKit, primaryHex: k.primaryHex ?? null }, ...rows]);
-        toast.success("Duplicated");
+        toast.success("Duplicado");
       }
     } catch (e: any) {
-      toast.error(e?.message ?? "Duplicate failed");
+      toast.error(e?.message ?? "Falha ao duplicar");
     }
   }
 
   async function onDelete(k: Kit) {
-    if (!confirm(`Delete "${k.name}"? This cannot be undone.`)) return;
+    if (!confirm(`Excluir "${k.name}"? Isso não pode ser desfeito.`)) return;
     try {
       await deleteFn({ data: { kitId: k.id, ownerToken } });
       setKits((rows) => rows.filter((r) => r.id !== k.id));
     } catch (e: any) {
-      toast.error(e?.message ?? "Delete failed");
+      toast.error(e?.message ?? "Falha ao excluir");
     }
   }
 
   async function onBulkDelete() {
     if (selected.size === 0) return;
-    if (!confirm(`Delete ${selected.size} kit${selected.size > 1 ? "s" : ""}? This cannot be undone.`))
+    if (!confirm(`Excluir ${selected.size} kit${selected.size > 1 ? "s" : ""}? Isso não pode ser desfeito.`))
       return;
     const ids = Array.from(selected);
     try {
@@ -167,9 +167,9 @@ function LibraryPage() {
       setKits((rows) => rows.filter((r) => !selected.has(r.id)));
       setSelected(new Set());
       setSelectMode(false);
-      toast.success(`Deleted ${ids.length} kit${ids.length > 1 ? "s" : ""}`);
+      toast.success(`${ids.length} kit${ids.length > 1 ? "s" : ""} excluído(s)`);
     } catch (e: any) {
-      toast.error(e?.message ?? "Bulk delete failed");
+      toast.error(e?.message ?? "Falha ao excluir em massa");
     }
   }
 
@@ -178,7 +178,7 @@ function LibraryPage() {
       <SiteHeader />
       <main className="mx-auto max-w-6xl px-6 py-16">
         <div className="mb-12">
-          <p className={eyebrow}>// library</p>
+          <p className={eyebrow}>// biblioteca</p>
           <h1
             className="mt-4"
             style={{
@@ -189,7 +189,7 @@ function LibraryPage() {
               letterSpacing: "-0.02em",
             }}
           >
-            Your brand kits.
+            Seus kits de marca.
           </h1>
         </div>
 
@@ -210,7 +210,7 @@ function LibraryPage() {
                 }}
                 className={`${mono} hover:opacity-70 transition-opacity`}
               >
-                {selectMode ? "[ Done ]" : "[ Select ]"}
+                {selectMode ? "[ Concluído ]" : "[ Selecionar ]"}
               </button>
               {selectMode && (
                 <button
@@ -218,12 +218,12 @@ function LibraryPage() {
                   onClick={toggleAll}
                   className={`${mono} text-muted-foreground hover:text-foreground transition-colors`}
                 >
-                  {allSelected ? "Clear all" : "Select all"}
+                  {allSelected ? "Limpar tudo" : "Selecionar tudo"}
                 </button>
               )}
               <span className={`${mono} text-muted-foreground`}>
                 {kits.length} {kits.length === 1 ? "kit" : "kits"}
-                {selectMode && selected.size > 0 ? ` · ${selected.size} selected` : ""}
+                {selectMode && selected.size > 0 ? ` · ${selected.size} selecionado(s)` : ""}
               </span>
             </div>
             {selectMode && selected.size > 0 && (
@@ -232,7 +232,7 @@ function LibraryPage() {
                 onClick={onBulkDelete}
                 className={`${mono} text-[#8B1A1A] hover:opacity-70 transition-opacity`}
               >
-                [ Delete {selected.size} ]
+                [ Excluir {selected.size} ]
               </button>
             )}
           </div>
@@ -245,7 +245,7 @@ function LibraryPage() {
             className="border border-dashed p-20 text-center"
             style={{ borderColor: "rgba(10,10,10,0.20)" }}
           >
-            <p className={`${eyebrow}`}>// empty</p>
+            <p className={`${eyebrow}`}>// vazio</p>
             <p
               className="mt-6"
               style={{
@@ -255,13 +255,13 @@ function LibraryPage() {
                 color: "rgba(10,10,10,0.7)",
               }}
             >
-              No kits yet.
+              Nenhum kit ainda.
             </p>
             <Link
               to="/"
               className={`${mono} mt-8 inline-block bg-foreground text-background px-5 py-2 hover:opacity-90 transition-opacity`}
             >
-              [ Create your first kit ]
+              [ Crie seu primeiro kit ]
             </Link>
           </div>
         ) : (
@@ -295,7 +295,7 @@ function LibraryPage() {
                         e.stopPropagation();
                         toggle(k.id);
                       }}
-                      aria-label={isSelected ? "Deselect" : "Select"}
+                      aria-label={isSelected ? "Desmarcar" : "Selecionar"}
                       className="relative z-10 -m-3 flex h-11 w-11 shrink-0 cursor-pointer items-center justify-center p-3"
                       style={{ pointerEvents: "auto" }}
                     >
@@ -318,7 +318,7 @@ function LibraryPage() {
                   <Link
                     to="/kit/$kitId"
                     params={{ kitId: k.id }}
-                    aria-label={`Open ${k.name}`}
+                    aria-label={`Abrir ${k.name}`}
                     className="relative flex h-16 w-16 shrink-0 items-center justify-center overflow-hidden transition-opacity hover:opacity-80"
                     style={{
                       background: k.primaryHex
@@ -393,7 +393,7 @@ function LibraryPage() {
                           }}
                           title={
                             k.displayFont?.source_family || k.displayFont?.family
-                              ? `Set in ${k.displayFont?.source_family ?? k.displayFont?.family}`
+                              ? `Definido em ${k.displayFont?.source_family ?? k.displayFont?.family}`
                               : undefined
                           }
                         >
@@ -449,21 +449,21 @@ function LibraryPage() {
                           setEditingId(k.id);
                         }}
                       >
-                        Rename
+                        Renomear
                       </button>
                       <button
                         type="button"
                         className="hover:opacity-70 transition-opacity"
                         onClick={() => onDuplicate(k)}
                       >
-                        Duplicate
+                        Duplicar
                       </button>
                       <button
                         type="button"
                         className="text-[#8B1A1A] hover:opacity-70 transition-opacity"
                         onClick={() => onDelete(k)}
                       >
-                        Delete
+                        Excluir
                       </button>
                     </div>
                   )}

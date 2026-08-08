@@ -70,9 +70,9 @@ export function RecentKits() {
   return (
     <section className="recent-kits">
       <div className="recent-head">
-        <p className="recent-eye">// recent kits</p>
+        <p className="recent-eye">// kits recentes</p>
         <Link to="/library" className="recent-all">
-          [ All brand kits → ]
+          [ Todos os kits de marca → ]
         </Link>
       </div>
 
@@ -82,13 +82,13 @@ export function RecentKits() {
           type="text"
           value={q}
           onChange={(e) => setQ(e.target.value)}
-          placeholder="Search your kits…"
-          aria-label="Search your kits"
+          placeholder="Buscar seus kits…"
+          aria-label="Buscar seus kits"
         />
       </div>
 
       {filtered.length === 0 ? (
-        <p className="recent-empty">No kits match "{q}".</p>
+        <p className="recent-empty">Nenhum kit corresponde a "{q}".</p>
       ) : (
         <ul className="recent-list">
           {filtered.map((k, i) => (

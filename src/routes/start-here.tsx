@@ -6,27 +6,27 @@ import { SiteHeader } from "@/components/site-header";
 export const Route = createFileRoute("/start-here")({
   head: () => ({
     meta: [
-      { title: "Start Here — Brand Kit" },
+      { title: "Comece aqui — Cora Extrator" },
       {
         name: "description",
         content:
-          "How to use this Brand Kit template: extract any brand from a URL, connect Firecrawl for richer results, and clean up when you're done.",
+          "Como usar este template Cora Extrator: extraia qualquer marca de uma URL, conecte o Firecrawl para resultados mais ricos e limpe tudo quando terminar.",
       },
     ],
   }),
   component: StartHerePage,
 });
 
-const CONNECT_FIRECRAWL_PROMPT = `Connect the Firecrawl connector to this project so URL extraction can use it for JS-heavy sites.`;
+const CONNECT_FIRECRAWL_PROMPT = `Conecte o conector Firecrawl a este projeto para que a extração de URL possa usá-lo em sites com muito JavaScript.`;
 
-const REMOVE_PROMPT = `Remove the "Start Here" button from the navbar and delete the /start-here route. Also delete src/components/start-here-button.tsx and src/routes/start-here.tsx. Keep everything else as-is.`;
+const REMOVE_PROMPT = `Remova o botão "Start Here" da barra de navegação e apague a rota /start-here. Apague também src/components/start-here-button.tsx e src/routes/start-here.tsx. Mantenha o restante como está.`;
 
 function StartHerePage() {
   return (
     <div style={{ background: "#F4EFE6", color: "#0A0A0A", minHeight: "100vh" }}>
       <SiteHeader />
       <main className="mx-auto w-full max-w-3xl px-6 py-16 sm:py-24">
-        <Eyebrow>// Template guide</Eyebrow>
+        <Eyebrow>// Guia do template</Eyebrow>
         <h1
           className="mt-4"
           style={{
@@ -37,65 +37,67 @@ function StartHerePage() {
             letterSpacing: "-0.01em",
           }}
         >
-          Start <em style={{ fontStyle: "italic", fontWeight: 400 }}>here.</em>
+          Comece <em style={{ fontStyle: "italic", fontWeight: 400 }}>aqui.</em>
         </h1>
 
         <Divider />
 
-        <Section number="01." title="What this template does">
+        <Section number="01." title="O que este template faz">
           <P>
-            Paste any company URL. The app extracts the brand's palette,
-            typography, voice, and design tokens — and packages them as a
-            kit you can browse, share, and export.
+            Cole a URL de qualquer empresa. O app extrai a paleta,
+            tipografia, voz e tokens de design da marca — e os organiza como
+            um kit que você pode navegar, compartilhar e exportar.
           </P>
           <P>
-            Recent kits show up on the home page. Open one to see colors,
-            fonts, logos, and a generated <Mono>design.md</Mono>.
+            Os kits recentes aparecem na página inicial. Abra um para ver
+            cores, fontes, logos e um <Mono>design.md</Mono> gerado.
           </P>
           <P>
-            Drop these files into Lovable or your AI agent to use their
-            brand.
+            Solte esses arquivos no Lovable ou no seu agente de IA para usar
+            a marca dele.
           </P>
         </Section>
 
-        <Section number="02." title="Optional: Firecrawl connector">
+        <Section number="02." title="Opcional: conector Firecrawl">
           <FirecrawlCard />
           <P>
-            Extraction works without it. Adding Firecrawl gives you
-            better results on JavaScript-heavy sites and richer brand data.
+            A extração funciona sem ele. Adicionar o Firecrawl traz
+            resultados melhores em sites com muito JavaScript e dados de
+            marca mais ricos.
           </P>
 
-          <SubHeading>Pricing — mostly free</SubHeading>
+          <SubHeading>Preço — praticamente grátis</SubHeading>
           <P>
-            Firecrawl gives every new account <strong>500 free credits</strong>{" "}
-            on sign-up, no card required. One brand extraction typically uses
-            1–5 credits, so casual use rarely leaves the free tier. If you do
-            run out, their Hobby plan starts at <strong>$16/mo</strong> for
-            3,000 credits — only needed for heavy or commercial use.
+            O Firecrawl dá a cada nova conta <strong>500 créditos grátis</strong>{" "}
+            no cadastro, sem precisar de cartão. Uma extração de marca
+            costuma usar de 1 a 5 créditos, então o uso casual raramente sai
+            do plano gratuito. Se acabarem, o plano Hobby começa em{" "}
+            <strong>US$ 16/mês</strong> para 3.000 créditos — necessário só
+            para uso intenso ou comercial.
           </P>
 
-          <SubHeading>Connecting it</SubHeading>
+          <SubHeading>Conectando</SubHeading>
           <P>
-            <strong>If you remixed this template,</strong> Lovable may have
-            already linked Firecrawl. If you're not sure, paste this into
-            the Lovable chat:
+            <strong>Se você fez um remix deste template,</strong> o Lovable
+            pode já ter vinculado o Firecrawl. Se não tiver certeza, cole
+            isto no chat do Lovable:
           </P>
           <PromptBlock text={CONNECT_FIRECRAWL_PROMPT} />
           <P style={{ marginTop: 16 }}>
-            Lovable will open the connector picker. Pick an existing
-            Firecrawl connection or create one. No code changes needed.
+            O Lovable abrirá o seletor de conectores. Escolha uma conexão
+            Firecrawl existente ou crie uma. Não é preciso alterar código.
           </P>
         </Section>
 
-        <Section number="03." title="When you're done with this guide">
+        <Section number="03." title="Quando terminar este guia">
           <P>
-            Once you've got your bearings, you can remove the Start Here
-            button and this page. Paste this into the Lovable chat:
+            Depois de se orientar, você pode remover o botão Start Here e
+            esta página. Cole isto no chat do Lovable:
           </P>
           <PromptBlock text={REMOVE_PROMPT} />
           <P style={{ marginTop: 16, fontSize: 13, color: "rgba(10,10,10,0.6)" }}>
-            You can always restore it later by asking Lovable to add a
-            Start Here page back.
+            Você sempre pode restaurá-la depois pedindo ao Lovable para
+            adicionar a página Start Here de volta.
           </P>
         </Section>
 
@@ -115,7 +117,7 @@ function StartHerePage() {
               paddingBottom: 2,
             }}
           >
-            ← Back to extract
+            ← Voltar para extrair
           </Link>
           <span
             style={{
@@ -126,7 +128,7 @@ function StartHerePage() {
               color: "rgba(10,10,10,0.45)",
             }}
           >
-            Brand Kit / v1.0
+            Cora Extrator / v1.0
           </span>
         </div>
       </main>
@@ -314,7 +316,7 @@ function FirecrawlCard() {
             color: "rgba(10,10,10,0.55)",
           }}
         >
-          Web scraping · 500 free credits
+          Extração de sites · 500 créditos grátis
         </span>
       </div>
     </div>
@@ -390,10 +392,10 @@ function PromptBlock({ text }: { text: string }) {
           color: "rgba(10,10,10,0.55)",
         }}
       >
-        <span>Prompt — copy into Lovable chat</span>
+        <span>Prompt — cole no chat do Lovable</span>
         <button
           onClick={onCopy}
-          aria-label="Copy prompt"
+          aria-label="Copiar prompt"
           style={{
             display: "inline-flex",
             alignItems: "center",
@@ -410,11 +412,11 @@ function PromptBlock({ text }: { text: string }) {
         >
           {copied ? (
             <>
-              <Check className="h-3 w-3" strokeWidth={2} /> Copied
+              <Check className="h-3 w-3" strokeWidth={2} /> Copiado
             </>
           ) : (
             <>
-              <Copy className="h-3 w-3" strokeWidth={1.5} /> Copy
+              <Copy className="h-3 w-3" strokeWidth={1.5} /> Copiar
             </>
           )}
         </button>

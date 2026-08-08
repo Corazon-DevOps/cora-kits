@@ -10,7 +10,9 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as StartHereRouteImport } from './routes/start-here'
+import { Route as RedefinirSenhaRouteImport } from './routes/redefinir-senha'
 import { Route as LibraryRouteImport } from './routes/library'
+import { Route as EntrarRouteImport } from './routes/entrar'
 import { Route as DesignRouteImport } from './routes/design'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as ShareShareTokenRouteImport } from './routes/share.$shareToken'
@@ -23,9 +25,19 @@ const StartHereRoute = StartHereRouteImport.update({
   path: '/start-here',
   getParentRoute: () => rootRouteImport,
 } as any)
+const RedefinirSenhaRoute = RedefinirSenhaRouteImport.update({
+  id: '/redefinir-senha',
+  path: '/redefinir-senha',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const LibraryRoute = LibraryRouteImport.update({
   id: '/library',
   path: '/library',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const EntrarRoute = EntrarRouteImport.update({
+  id: '/entrar',
+  path: '/entrar',
   getParentRoute: () => rootRouteImport,
 } as any)
 const DesignRoute = DesignRouteImport.update({
@@ -62,7 +74,9 @@ const DesignHistoryDiffRoute = DesignHistoryDiffRouteImport.update({
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/design': typeof DesignRouteWithChildren
+  '/entrar': typeof EntrarRoute
   '/library': typeof LibraryRoute
+  '/redefinir-senha': typeof RedefinirSenhaRoute
   '/start-here': typeof StartHereRoute
   '/design/history': typeof DesignHistoryRouteWithChildren
   '/kit/$kitId': typeof KitKitIdRoute
@@ -72,7 +86,9 @@ export interface FileRoutesByFullPath {
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/design': typeof DesignRouteWithChildren
+  '/entrar': typeof EntrarRoute
   '/library': typeof LibraryRoute
+  '/redefinir-senha': typeof RedefinirSenhaRoute
   '/start-here': typeof StartHereRoute
   '/design/history': typeof DesignHistoryRouteWithChildren
   '/kit/$kitId': typeof KitKitIdRoute
@@ -83,7 +99,9 @@ export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/design': typeof DesignRouteWithChildren
+  '/entrar': typeof EntrarRoute
   '/library': typeof LibraryRoute
+  '/redefinir-senha': typeof RedefinirSenhaRoute
   '/start-here': typeof StartHereRoute
   '/design/history': typeof DesignHistoryRouteWithChildren
   '/kit/$kitId': typeof KitKitIdRoute
@@ -95,7 +113,9 @@ export interface FileRouteTypes {
   fullPaths:
     | '/'
     | '/design'
+    | '/entrar'
     | '/library'
+    | '/redefinir-senha'
     | '/start-here'
     | '/design/history'
     | '/kit/$kitId'
@@ -105,7 +125,9 @@ export interface FileRouteTypes {
   to:
     | '/'
     | '/design'
+    | '/entrar'
     | '/library'
+    | '/redefinir-senha'
     | '/start-here'
     | '/design/history'
     | '/kit/$kitId'
@@ -115,7 +137,9 @@ export interface FileRouteTypes {
     | '__root__'
     | '/'
     | '/design'
+    | '/entrar'
     | '/library'
+    | '/redefinir-senha'
     | '/start-here'
     | '/design/history'
     | '/kit/$kitId'
@@ -126,7 +150,9 @@ export interface FileRouteTypes {
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   DesignRoute: typeof DesignRouteWithChildren
+  EntrarRoute: typeof EntrarRoute
   LibraryRoute: typeof LibraryRoute
+  RedefinirSenhaRoute: typeof RedefinirSenhaRoute
   StartHereRoute: typeof StartHereRoute
   KitKitIdRoute: typeof KitKitIdRoute
   ShareShareTokenRoute: typeof ShareShareTokenRoute
@@ -141,11 +167,25 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof StartHereRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/redefinir-senha': {
+      id: '/redefinir-senha'
+      path: '/redefinir-senha'
+      fullPath: '/redefinir-senha'
+      preLoaderRoute: typeof RedefinirSenhaRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/library': {
       id: '/library'
       path: '/library'
       fullPath: '/library'
       preLoaderRoute: typeof LibraryRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/entrar': {
+      id: '/entrar'
+      path: '/entrar'
+      fullPath: '/entrar'
+      preLoaderRoute: typeof EntrarRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/design': {
@@ -219,7 +259,9 @@ const DesignRouteWithChildren =
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   DesignRoute: DesignRouteWithChildren,
+  EntrarRoute: EntrarRoute,
   LibraryRoute: LibraryRoute,
+  RedefinirSenhaRoute: RedefinirSenhaRoute,
   StartHereRoute: StartHereRoute,
   KitKitIdRoute: KitKitIdRoute,
   ShareShareTokenRoute: ShareShareTokenRoute,
@@ -227,12 +269,3 @@ const rootRouteChildren: RootRouteChildren = {
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
-
-import type { getRouter } from './router.tsx'
-import type { createStart } from '@tanstack/react-start'
-declare module '@tanstack/react-start' {
-  interface Register {
-    ssr: true
-    router: Awaited<ReturnType<typeof getRouter>>
-  }
-}
