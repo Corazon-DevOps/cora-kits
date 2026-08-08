@@ -11,10 +11,10 @@
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as StartHereRouteImport } from './routes/start-here'
 import { Route as RedefinirSenhaRouteImport } from './routes/redefinir-senha'
-import { Route as PlanosRouteImport } from './routes/planos'
 import { Route as LibraryRouteImport } from './routes/library'
 import { Route as EntrarRouteImport } from './routes/entrar'
 import { Route as DesignRouteImport } from './routes/design'
+import { Route as ApoiarRouteImport } from './routes/apoiar'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as ShareShareTokenRouteImport } from './routes/share.$shareToken'
 import { Route as KitKitIdRouteImport } from './routes/kit.$kitId'
@@ -31,11 +31,6 @@ const RedefinirSenhaRoute = RedefinirSenhaRouteImport.update({
   path: '/redefinir-senha',
   getParentRoute: () => rootRouteImport,
 } as any)
-const PlanosRoute = PlanosRouteImport.update({
-  id: '/planos',
-  path: '/planos',
-  getParentRoute: () => rootRouteImport,
-} as any)
 const LibraryRoute = LibraryRouteImport.update({
   id: '/library',
   path: '/library',
@@ -49,6 +44,11 @@ const EntrarRoute = EntrarRouteImport.update({
 const DesignRoute = DesignRouteImport.update({
   id: '/design',
   path: '/design',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ApoiarRoute = ApoiarRouteImport.update({
+  id: '/apoiar',
+  path: '/apoiar',
   getParentRoute: () => rootRouteImport,
 } as any)
 const IndexRoute = IndexRouteImport.update({
@@ -79,10 +79,10 @@ const DesignHistoryDiffRoute = DesignHistoryDiffRouteImport.update({
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/apoiar': typeof ApoiarRoute
   '/design': typeof DesignRouteWithChildren
   '/entrar': typeof EntrarRoute
   '/library': typeof LibraryRoute
-  '/planos': typeof PlanosRoute
   '/redefinir-senha': typeof RedefinirSenhaRoute
   '/start-here': typeof StartHereRoute
   '/design/history': typeof DesignHistoryRouteWithChildren
@@ -92,10 +92,10 @@ export interface FileRoutesByFullPath {
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/apoiar': typeof ApoiarRoute
   '/design': typeof DesignRouteWithChildren
   '/entrar': typeof EntrarRoute
   '/library': typeof LibraryRoute
-  '/planos': typeof PlanosRoute
   '/redefinir-senha': typeof RedefinirSenhaRoute
   '/start-here': typeof StartHereRoute
   '/design/history': typeof DesignHistoryRouteWithChildren
@@ -106,10 +106,10 @@ export interface FileRoutesByTo {
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/apoiar': typeof ApoiarRoute
   '/design': typeof DesignRouteWithChildren
   '/entrar': typeof EntrarRoute
   '/library': typeof LibraryRoute
-  '/planos': typeof PlanosRoute
   '/redefinir-senha': typeof RedefinirSenhaRoute
   '/start-here': typeof StartHereRoute
   '/design/history': typeof DesignHistoryRouteWithChildren
@@ -121,10 +121,10 @@ export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
     | '/'
+    | '/apoiar'
     | '/design'
     | '/entrar'
     | '/library'
-    | '/planos'
     | '/redefinir-senha'
     | '/start-here'
     | '/design/history'
@@ -134,10 +134,10 @@ export interface FileRouteTypes {
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
+    | '/apoiar'
     | '/design'
     | '/entrar'
     | '/library'
-    | '/planos'
     | '/redefinir-senha'
     | '/start-here'
     | '/design/history'
@@ -147,10 +147,10 @@ export interface FileRouteTypes {
   id:
     | '__root__'
     | '/'
+    | '/apoiar'
     | '/design'
     | '/entrar'
     | '/library'
-    | '/planos'
     | '/redefinir-senha'
     | '/start-here'
     | '/design/history'
@@ -161,10 +161,10 @@ export interface FileRouteTypes {
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  ApoiarRoute: typeof ApoiarRoute
   DesignRoute: typeof DesignRouteWithChildren
   EntrarRoute: typeof EntrarRoute
   LibraryRoute: typeof LibraryRoute
-  PlanosRoute: typeof PlanosRoute
   RedefinirSenhaRoute: typeof RedefinirSenhaRoute
   StartHereRoute: typeof StartHereRoute
   KitKitIdRoute: typeof KitKitIdRoute
@@ -187,13 +187,6 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof RedefinirSenhaRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/planos': {
-      id: '/planos'
-      path: '/planos'
-      fullPath: '/planos'
-      preLoaderRoute: typeof PlanosRouteImport
-      parentRoute: typeof rootRouteImport
-    }
     '/library': {
       id: '/library'
       path: '/library'
@@ -213,6 +206,13 @@ declare module '@tanstack/react-router' {
       path: '/design'
       fullPath: '/design'
       preLoaderRoute: typeof DesignRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/apoiar': {
+      id: '/apoiar'
+      path: '/apoiar'
+      fullPath: '/apoiar'
+      preLoaderRoute: typeof ApoiarRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/': {
@@ -278,10 +278,10 @@ const DesignRouteWithChildren =
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  ApoiarRoute: ApoiarRoute,
   DesignRoute: DesignRouteWithChildren,
   EntrarRoute: EntrarRoute,
   LibraryRoute: LibraryRoute,
-  PlanosRoute: PlanosRoute,
   RedefinirSenhaRoute: RedefinirSenhaRoute,
   StartHereRoute: StartHereRoute,
   KitKitIdRoute: KitKitIdRoute,

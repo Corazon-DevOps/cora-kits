@@ -58,7 +58,7 @@ function Landing() {
             <Link to="/library">
               <BookOpen aria-hidden /> Biblioteca
             </Link>
-            <Link to="/planos">Plano</Link>
+            <Link to="/apoiar">Apoiar</Link>
             {user ? (
               <button
                 type="button"

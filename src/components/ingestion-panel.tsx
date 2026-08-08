@@ -200,11 +200,6 @@ export function IngestionPanel() {
         data: { kitId: id, ownerToken, url: normUrl, imageUrls, pdfTexts },
       });
       if (!extracted.ok) {
-        if ((extracted as any).requiresSubscription) {
-          toast.error(extracted.error ?? "Assine para continuar extraindo.");
-          navigate({ to: "/planos" });
-          return;
-        }
         throw new Error(extracted.error ?? "A extração falhou");
       }
       navigate({ to: "/kit/$kitId", params: { kitId: id } });
@@ -257,8 +252,8 @@ export function IngestionPanel() {
 
         {!user && (
           <p className="ingest-gate">
-            <Link to="/entrar" search={{ redirect: "/" }}>Crie sua conta</Link> para extrair — a
-            primeira extração é gratuita, depois R$ 15/mês.
+            <Link to="/entrar" search={{ redirect: "/" }}>Crie sua conta</Link> para extrair — é
+            gratuito.
           </p>
         )}
 
