@@ -1,8 +1,9 @@
 import { useMemo, useState } from "react";
-import { createFileRoute } from "@tanstack/react-router";
+import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { toast } from "sonner";
-import { Copy, Download } from "lucide-react";
+import { Copy, Download, LayoutPanelLeft } from "lucide-react";
 import { SiteHeader } from "@/components/site-header";
+import { PromptSidebar } from "@/components/prompt-sidebar";
 import { buildPromptParts, estimateTokens } from "@/lib/project-spec";
 
 export const Route = createFileRoute("/prompt")({
