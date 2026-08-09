@@ -474,6 +474,5 @@ function LibraryPage() {
         )}
       </main>
     </div>
-
   );
 }
