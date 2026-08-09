@@ -1,6 +1,6 @@
 import { createServerFn } from "@tanstack/react-start";
 import { z } from "zod";
-import { requireSupabaseAuth } from "@/integrations/supabase/auth-middleware";
+import { requirePortableAuth } from "@/lib/portable-auth-middleware";
 import {
   parseDesignDoc,
   diffDesignDocs,
@@ -16,7 +16,7 @@ export type DesignVersionListItem = {
 };
 
 export const listDesignVersions = createServerFn({ method: "GET" })
-  .middleware([requireSupabaseAuth])
+  .middleware([requirePortableAuth])
   .handler(async ({ context }) => {
     const { supabase } = context;
     const { data, error } = await supabase
@@ -28,7 +28,7 @@ export const listDesignVersions = createServerFn({ method: "GET" })
   });
 
 export const getDesignVersion = createServerFn({ method: "POST" })
-  .middleware([requireSupabaseAuth])
+  .middleware([requirePortableAuth])
   .inputValidator(z.object({ id: z.string().uuid() }).parse)
   .handler(async ({ data, context }) => {
     const { supabase } = context;
@@ -49,7 +49,7 @@ export const getDesignVersion = createServerFn({ method: "POST" })
   });
 
 export const saveDesignVersion = createServerFn({ method: "POST" })
-  .middleware([requireSupabaseAuth])
+  .middleware([requirePortableAuth])
   .inputValidator(
     z.object({
       markdown: z.string().min(1).max(500_000),
@@ -86,7 +86,7 @@ export const saveDesignVersion = createServerFn({ method: "POST" })
   });
 
 export const diffDesignVersions = createServerFn({ method: "POST" })
-  .middleware([requireSupabaseAuth])
+  .middleware([requirePortableAuth])
   .inputValidator(
     z.object({
       aId: z.string().uuid(),
