@@ -223,14 +223,6 @@ const css = `
     justify-content: center;
   }
 
-  .foot-meta {
-    margin-top: 28px;
-    font-family: 'Courier Prime', monospace;
-    font-size: 10px;
-    letter-spacing: 0.24em;
-    text-transform: uppercase;
-    color: rgba(10,10,10,0.45);
-  }
 
   /* ---------- How ---------- */
   .how {
