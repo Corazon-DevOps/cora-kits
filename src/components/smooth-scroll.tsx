@@ -13,6 +13,13 @@ export function SmoothScroll() {
       duration: 1.05,
       easing: (t) => 1 - Math.pow(1 - t, 3),
       smoothWheel: true,
+      autoRaf: false,
+      syncTouch: false,
+      prevent: (node) => {
+        // Allow native scroll for specific sidebars or overflow containers
+        return node.closest('.custom-scrollbar') !== null || 
+               node.closest('.no-scrollbar') !== null;
+      },
       wheelMultiplier: 1,
       touchMultiplier: 1.4,
     });
