@@ -14,13 +14,13 @@ export const SPEC_SECTIONS: SpecSection[] = [
   {
     id: "papel",
     title: "Papel e objetivo",
-    body: `Você é um engenheiro sênior de produto full-stack. Sua tarefa é construir, do zero e de forma IDÊNTICA, o aplicativo web "Cora Extrator".
+    body: `Você é um engenheiro sênior de produto full-stack. Sua tarefa é construir, do zero e de forma IDÊNTICA, o aplicativo web descrito.
 Regras gerais:
 - Não invente funcionalidades fora desta especificação; não remova nenhuma.
 - Toda a interface é em português do Brasil (pt-BR).
 - O produto é 100% gratuito; existe apenas uma página de apoio via Pix.
 - Entregue código funcional, tipado e sem placeholders.
-Resumo do produto: o usuário informa a URL de qualquer site e o Cora Extrator extrai a identidade visual (paleta, tipografia, logo, tom de voz e tokens de design), monta um "kit de marca" navegável, permite editar, compartilhar por link público e exportar (JSON, CSS, PDF).`,
+Resumo do produto: o aplicativo permite extrair a identidade visual (paleta, tipografia, logo, imagens, tom de voz e tokens de design) de qualquer site, montando um "kit de marca" navegável que pode ser editado, compartilhado e exportado.`,
   },
   {
     id: "stack",
@@ -124,10 +124,10 @@ Qualidade: sem erros de tipo, sem console.error em fluxo normal, estados de carr
   },
 ];
 
-const HEADER = `Você vai receber a especificação do projeto "Cora Extrator" dividida em PARTES numeradas.
+const HEADER = (url?: string) => `Você vai receber a especificação do site "${url || "alvo"}" dividida em PARTES numeradas.
 Leia e memorize cada parte. Só comece a implementar depois da última parte.`;
 
-export function buildPromptParts(maxChars: number): string[] {
+export function buildPromptParts(maxChars: number, targetUrl?: string): string[] {
   const parts: string[] = [];
   let current = "";
 
@@ -147,8 +147,8 @@ export function buildPromptParts(maxChars: number): string[] {
     const n = i + 1;
     const head =
       n === 1
-        ? `${HEADER}\n\n=== PARTE ${n} DE ${total} ===`
-        : `Continuação da especificação do "Cora Extrator".\n\n=== PARTE ${n} DE ${total} ===`;
+        ? `${HEADER(targetUrl)}\n\n=== PARTE ${n} DE ${total} ===`
+        : `Continuação da especificação do site "${targetUrl || "alvo"}".\n\n=== PARTE ${n} DE ${total} ===`;
     const foot =
       n === total
         ? `\n\n=== FIM DA ESPECIFICAÇÃO ===\nAgora implemente o projeto completo, idêntico a esta especificação.`
