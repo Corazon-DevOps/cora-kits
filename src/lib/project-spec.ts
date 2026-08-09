@@ -68,7 +68,7 @@ Acessibilidade: contraste WCAG AA, foco visível, alt em imagens, um único H1 p
 - extensao.tsx — download e instalação da extensão de navegador.
 - apoiar.tsx — apoio via Pix (chave copiável) explicando que a ferramenta é gratuita.
 - prompt.tsx — gerador do SYSTEM prompt do próprio projeto, dividido em partes copiáveis.
-Cabeçalho fixo (SiteHeader) com marca "Cora Extrator", botão central "Comece aqui", links Biblioteca, Extensão, Apoiar, Entrar/Sair e CTA "Novo kit".`,
+- Cabeçalho fixo (SiteHeader) com marca "Cora Extrator", botões centrais e links Biblioteca, Extensão, Apoiar, Entrar/Sair e CTA "Novo kit".`,
   },
   {
     id: "dados",
@@ -88,15 +88,15 @@ Regras: leitura pública apenas via share_token com política restrita a anon; e
     id: "extracao",
     title: "Pipeline de extração",
     body: `Fluxo ao enviar uma URL:
-1. Normalizar a URL (adicionar https://, remover fragmento e parâmetros de rastreio) e bloquear destinos privados (localhost, IPs internos, redes reservadas) por uma guarda de URL no servidor.
-2. Raspar a página: chamar Firecrawl /v2/scrape (formats: markdown, rawHtml, links, branding, summary) em corrida (Promise.any) com um scraper direto próprio que converte HTML em markdown, coleta links, og:image, favicon e possível logo.
-3. Opcionalmente mapear o site (/v2/map, limite 50) para descobrir páginas de marca.
-4. Cores: extrair todos os valores de cor do CSS e do HTML inline, converter para HEX/RGB/HSL, deduplicar por proximidade perceptual, ordenar por frequência e luminância, classificar em primária, acento, superfícies e texto, calcular contraste WCAG entre pares.
-5. Tipografia: ler font-family, pesos e tamanhos usados; inferir escala tipográfica; resolver arquivos de fonte (Google Fonts ou @font-face) e gerar espécimes.
-6. Logo: sondar candidatos (img com "logo"/"brand"/"wordmark", og:image, apple-touch-icon, favicon), validar dimensões e transparência, gerar variações (claro, escuro, monocromático).
-7. Tom de voz e resumo de marca: chamada de IA com saída estruturada por tool calling (nome, descritores, arquétipos, tom, frases de exemplo, o que evitar).
-8. Montar tokens de design (cores, tipografia, espaçamento, raio, sombra) e persistir o kit; emitir progresso por etapas para a UI (componente de progresso com mensagens em pt-BR).
-Robustez obrigatória: timeouts por etapa, retentativas com backoff exponencial e jitter para 408/425/429/5xx, mensagens de erro humanas em pt-BR, degradação parcial (se a IA falhar, o kit ainda sai com paleta e tipografia).`,
+1. Normalizar a URL (adicionar https://, remover fragmento e parâmetros de rastreio) e bloquear destinos privados por uma guarda de URL no servidor.
+2. Raspar a página: chamar Firecrawl /v2/scrape (formats: markdown, rawHtml, links, branding, summary) em corrida com um scraper direto próprio.
+3. Imagens: o sistema deve identificar todas as tags <img> e extrair seus atributos src, além de og:image e favicons, garantindo que o prompt gerado para a IA inclua instruções para download dessas imagens.
+4. Cores: extrair valores CSS, converter para HEX/RGB/HSL, deduplicar e classificar em primária, acento, superfícies e texto.
+5. Tipografia: ler font-family, pesos e tamanhos; inferir escala tipográfica; resolver arquivos de fonte.
+6. Logo: sondar candidatos (logos, wordmarks, marcas), validar e gerar variações.
+7. Banco de dados (Condicional): se a IA detectar caminhos para arquivos de banco de dados (.sql, dumps, backups) ou endpoints de API que sugerem acesso a dados brutos, deve-se gerar um prompt SEPARADO para essa finalidade, não misturado com o conteúdo visual.
+8. Tom de voz e resumo: chamada de IA com saída estruturada.
+9. Montar tokens de design e persistir o kit.`,
   },
   {
     id: "recursos",
