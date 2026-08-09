@@ -1,5 +1,5 @@
 import { createServerFn } from "@tanstack/react-start";
-import { requireSupabaseAuth } from "@/integrations/supabase/auth-middleware";
+import { requirePortableAuth } from "@/lib/portable-auth-middleware";
 import {
   ExtractKitInputSchema,
   GenerateSampleCopyInputSchema,
@@ -10,16 +10,16 @@ import {
 } from "@/server/extraction.server";
 
 export const extractKit = createServerFn({ method: "POST" })
-  .middleware([requireSupabaseAuth])
+  .middleware([requirePortableAuth])
   .inputValidator((data) => ExtractKitInputSchema.parse(data))
   .handler(async ({ data }) => extractKitImpl(data));
 
 export const generateSampleCopy = createServerFn({ method: "POST" })
-  .middleware([requireSupabaseAuth])
+  .middleware([requirePortableAuth])
   .inputValidator((data) => GenerateSampleCopyInputSchema.parse(data))
   .handler(async ({ data }) => generateSampleCopyImpl(data));
 
 export const harvestMoreAssets = createServerFn({ method: "POST" })
-  .middleware([requireSupabaseAuth])
+  .middleware([requirePortableAuth])
   .inputValidator((data) => HarvestMoreAssetsInputSchema.parse(data))
   .handler(async ({ data }) => harvestMoreAssetsImpl(data));
