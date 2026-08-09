@@ -61,7 +61,7 @@ export const requirePortableAuth = createMiddleware({ type: "function" }).server
       context: {
         supabase,
         userId,
-        claims: data.claims,
+        claims: {}, // getUser doesn't return raw claims, but userId is the critical part
       },
     });
   },
