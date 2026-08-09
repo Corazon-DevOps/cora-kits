@@ -51,9 +51,9 @@ export const requirePortableAuth = createMiddleware({ type: "function" }).server
       },
     });
 
-    const { data, error } = await supabase.auth.getClaims(token);
-    const userId = data?.claims?.sub;
-    if (error || !userId) {
+    const { data: userData, error: userError } = await supabase.auth.getUser(token);
+    const userId = userData?.user?.id;
+    if (userError || !userId) {
       throw new Error("Sessão expirada. Entre novamente");
     }
 
@@ -61,7 +61,7 @@ export const requirePortableAuth = createMiddleware({ type: "function" }).server
       context: {
         supabase,
         userId,
-        claims: data.claims,
+        claims: {}, // getUser doesn't return raw claims, but userId is the critical part
       },
     });
   },

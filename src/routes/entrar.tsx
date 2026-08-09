@@ -223,6 +223,9 @@ function traduzErro(msg?: string): string {
   if (m.includes("user already registered")) return "Este e-mail já tem uma conta. Faça login.";
   if (m.includes("email not confirmed")) return "Confirme seu e-mail antes de entrar.";
   if (m.includes("password")) return "Senha inválida ou muito fraca.";
+  if (m.includes("unsupported provider") || m.includes("missing oauth secret")) {
+    return "Erro na configuração do Google. Use login por e-mail ou aguarde o suporte.";
+  }
   return msg;
 }
 
