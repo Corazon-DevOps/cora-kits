@@ -150,7 +150,7 @@ function PromptStudio() {
                       Copiar
                     </button>
                   </div>
-                  <pre className="mt-4 max-h-72 overflow-auto whitespace-pre-wrap font-mono text-[12px] leading-relaxed text-muted-foreground">
+                  <pre className="mt-4 max-h-72 overflow-auto custom-scrollbar whitespace-pre-wrap font-mono text-[12px] leading-relaxed text-muted-foreground">
                     {part}
                   </pre>
                 </li>

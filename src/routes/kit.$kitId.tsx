@@ -2072,7 +2072,7 @@ function ExportBlock({ title, content, filename }: { title: string; content: str
           </Button>
         </div>
       </div>
-      <pre className="max-h-80 overflow-auto whitespace-pre rounded-lg bg-surface p-3 font-mono text-[11px] leading-relaxed sm:text-xs">{content}</pre>
+      <pre className="max-h-80 overflow-auto custom-scrollbar whitespace-pre rounded-lg bg-surface p-3 font-mono text-[11px] leading-relaxed sm:text-xs">{content}</pre>
     </div>
   );
 }
