@@ -172,6 +172,8 @@
   ::-webkit-scrollbar-thumb {
     background: rgba(10, 10, 10, 0.15);
     border-radius: 9999px;
+    border: 1px solid transparent;
+    background-clip: padding-box;
     transition: background 150ms ease;
   }
 
@@ -181,10 +183,24 @@
 
   .dark ::-webkit-scrollbar-thumb {
     background: rgba(244, 239, 230, 0.15);
+    background-clip: padding-box;
   }
 
   .dark ::-webkit-scrollbar-thumb:hover {
     background: rgba(244, 239, 230, 0.3);
+  }
+
+  /* Custom Scrollbar Utility */
+  .custom-scrollbar::-webkit-scrollbar {
+    width: 5px;
+    height: 5px;
+  }
+  .custom-scrollbar::-webkit-scrollbar-thumb {
+    background: rgba(10, 10, 10, 0.2);
+    border-radius: 9999px;
+  }
+  .dark .custom-scrollbar::-webkit-scrollbar-thumb {
+    background: rgba(244, 239, 230, 0.2);
   }
 
   /* Scrollbar Hiding Utility */
