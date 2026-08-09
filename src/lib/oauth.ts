@@ -17,7 +17,9 @@ export async function signInWithGoogle(dest: string): Promise<GoogleSignInResult
   }
 
   const result = await lovable.auth.signInWithOAuth("google", {
-    redirect_uri: window.location.origin,
+    redirect_uri: window.location.origin.includes("localhost") 
+      ? window.location.origin 
+      : "https://cora-kits.vercel.app",
   });
   if (result.error) return { ok: false, message: result.error.message };
   return { ok: true, redirected: Boolean(result.redirected) };

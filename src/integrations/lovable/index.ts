@@ -2,7 +2,13 @@
 
 import { createLovableAuth } from "@lovable.dev/cloud-auth-js";
 import { supabase } from "../supabase/client";
-const lovableAuth = createLovableAuth();
+
+// Broker URL fixed for managed OAuth across all domains
+const BROWSER_BROKER_URL = "https://pbomfcmjscpmediuhwms.lovable.app/.lovable/auth-broker";
+
+const lovableAuth = createLovableAuth({
+  oauthBrokerUrl: BROWSER_BROKER_URL
+});
 
 type SignInOptions = {
   redirect_uri?: string;
