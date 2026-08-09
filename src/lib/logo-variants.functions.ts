@@ -1,6 +1,6 @@
 import { createServerFn } from "@tanstack/react-start";
 import { z } from "zod";
-import { getAdmin } from "@/server/supabase-admin.server";
+import { getAdmin, getDb } from "@/server/supabase-admin.server";
 import { decode as decodePng, encode as encodePng } from "fast-png";
 
 const GATEWAY = "https://ai.gateway.lovable.dev/v1/chat/completions";
@@ -252,7 +252,7 @@ export const generateLogoVariants = createServerFn({ method: "POST" })
       return { ok: true, results: skippedResults };
     }
 
-    const supabaseUrl = process.env.SUPABASE_URL!;
+    const { url: supabaseUrl } = (getDb() as any).auth;
     const urlFor = (a: { storage_path: string | null; url: string | null }) =>
       a.storage_path
         ? `${supabaseUrl}/storage/v1/object/public/brand-assets/${a.storage_path}`
