@@ -110,10 +110,11 @@ function Extensao() {
           ))}
         </ol>
 
-        <p className="mt-10 font-serif text-[13px] italic text-muted-foreground">
+        <p className="mt-10 font-serif text-[13px] italic text-muted-foreground pb-20">
           A extensão não coleta nem envia dados: toda a leitura acontece na sua própria aba.
         </p>
       </main>
     </div>
+
   );
 }
