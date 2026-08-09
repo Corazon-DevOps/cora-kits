@@ -77,7 +77,7 @@ function PromptStudio() {
       <div className="flex flex-1">
         <PromptSidebar onSelect={handleSelectKit} activeUrl={targetUrl} />
         
-        <main className="flex-1 overflow-y-auto max-h-[calc(100vh-64px)] px-4 py-16 sm:px-6 md:px-12 lg:px-24 scroll-smooth">
+        <main className="flex-1 overflow-y-auto max-h-[calc(100vh-64px)] px-4 py-16 sm:px-6 md:px-12 lg:px-24 scroll-smooth custom-scrollbar">
           <div className="mx-auto max-w-3xl">
             <div className="flex items-center gap-3">
               <p className="font-mono text-[10px] uppercase tracking-[0.24em] text-muted-foreground">
@@ -150,7 +150,7 @@ function PromptStudio() {
                       Copiar
                     </button>
                   </div>
-                  <pre className="mt-4 max-h-72 overflow-auto whitespace-pre-wrap font-mono text-[12px] leading-relaxed text-muted-foreground">
+                  <pre className="mt-4 max-h-72 overflow-auto custom-scrollbar whitespace-pre-wrap font-mono text-[12px] leading-relaxed text-muted-foreground">
                     {part}
                   </pre>
                 </li>

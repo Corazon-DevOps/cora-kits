@@ -265,7 +265,7 @@ function LibraryPage() {
             </Link>
           </div>
         ) : (
-          <ul className="divide-y" style={{ borderColor: "rgba(10,10,10,0.20)" }}>
+          <ul className="divide-y custom-scrollbar" style={{ borderColor: "rgba(10,10,10,0.20)" }}>
             {kits.map((k) => {
               const isEditing = editingId === k.id;
               const isSelected = selected.has(k.id);
