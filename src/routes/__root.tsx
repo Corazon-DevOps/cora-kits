@@ -9,6 +9,7 @@ import {
 } from "@tanstack/react-router";
 import { Toaster } from "@/components/ui/sonner";
 import { AuthProvider, useAuth } from "@/lib/auth";
+import { SiteFooter } from "@/components/site-footer";
 
 import { SmoothScroll } from "@/components/smooth-scroll";
 import appCss from "../styles.css?url";
@@ -123,6 +124,7 @@ function RootComponent() {
       <SmoothScroll />
       <PostLoginRedirect />
       <Outlet />
+      <SiteFooter />
       <Toaster />
     </AuthProvider>
   );
