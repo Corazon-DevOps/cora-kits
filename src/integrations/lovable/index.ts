@@ -7,7 +7,8 @@ import { supabase } from "../supabase/client";
 const BROWSER_BROKER_URL = "https://pbomfcmjscpmediuhwms.lovable.app/.lovable/auth-broker";
 
 const lovableAuth = createLovableAuth({
-  oauthBrokerUrl: BROWSER_BROKER_URL
+  oauthBrokerUrl: BROWSER_BROKER_URL,
+  supportedOAuthOrigins: ["https://cora-kits.vercel.app"]
 });
 
 type SignInOptions = {
