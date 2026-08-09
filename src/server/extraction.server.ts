@@ -266,6 +266,14 @@ const ExtractionSchema = {
         value_props: { type: "array", items: { type: "string" } },
       },
     },
+    database_signals: {
+      type: "object",
+      properties: {
+        detected: { type: "boolean" },
+        evidence: { type: "string" },
+        suggested_prompt: { type: "string" },
+      },
+    },
   },
   required: ["name", "colors", "fonts", "tokens", "voice", "assets"],
 };
@@ -304,13 +312,18 @@ type Extraction = {
     easing_description?: string | null;
     transition_notes?: string | null;
   };
-  brand_positioning?: {
-    tagline?: string | null;
-    mission?: string | null;
-    audience_description?: string | null;
-    industry_vertical?: string | null;
-    value_props?: string[];
-  };
+    brand_positioning?: {
+      tagline?: string | null;
+      mission?: string | null;
+      audience_description?: string | null;
+      industry_vertical?: string | null;
+      value_props?: string[];
+    };
+    database_signals?: {
+      detected: boolean;
+      evidence?: string;
+      suggested_prompt?: string;
+    };
 };
 
 function fallbackExtraction(input: {
@@ -383,15 +396,11 @@ const SYSTEM = `You are a senior brand strategist and design systems expert. Giv
 
 Rules:
 - Always output valid hex like #aabbcc.
-- Pick exactly ONE color per role; if a role doesn't fit, omit it (don't invent). Use the extended role vocabulary (accent-2, chart-1, chart-2, gradient-start, gradient-end, border, overlay) when warranted.
-- Identify 5-12 colors total.
-- For tokens, infer reasonable spacing scale (xs/sm/md/lg/xl), border radii, shadow, and animation easings/durations from the brand's visual style.
-- Voice: derive tone, vocabulary, do/don'ts, and write 4 sample copy strings IN THE BRAND'S VOICE.
-- For assets, return absolute URLs to logos/favicons/og images you find.
-- typography_scale: extract a REAL type scale from visual evidence — distinct sizes/weights/line-heights for h1/h2/h3/body/caption/label as observed in the scraped content. Include at least h1, h2, body. Use null for any value you cannot infer; never fabricate exact pixel sizes.
-- imagery_style: describe photography_style and illustration_style in plain prose useful for selecting stock imagery (e.g., "desaturated editorial portraits with natural light" or "flat geometric illustrations with bold primary colors"). Include 3-8 mood_keywords.
-- motion_style: ALWAYS provide overall_tempo. If no motion is observable, infer from brand personality (luxury/editorial → slow, playful/youth → fast, corporate → medium).
-- brand_positioning: pull tagline, mission, audience_description, industry_vertical, and 3-6 value_props as DISCRETE fields. Do not lump them into the summary.
+- Pick exactly ONE color per role; if a role doesn't fit, omit it.
+- For assets, return absolute URLs to logos, favicons, and ALL significant brand images/illustrations detected in <img> tags or metadata.
+- Voice: derive tone, vocabulary, and write sample copy strings.
+- Database Detection: Look for evidence of a database (e.g., links to .sql, .bak, /api/v1/dump, mention of database backups, public access to data exports).
+- If evidence is found, set database_signals.detected to true and provide a separate, detailed "suggested_prompt" specifically for downloading/extracting that database. This prompt must NOT be mixed with the main content.
 - Be specific and confident; avoid generic placeholders.`;
 
 // ============================================================================

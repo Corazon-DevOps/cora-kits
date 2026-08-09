@@ -36,7 +36,9 @@ const BUDGETS = [
 
 function PromptStudio() {
   const [budget, setBudget] = useState(BUDGETS[1]!.chars);
-  const parts = useMemo(() => buildPromptParts(budget), [budget]);
+  const searchParams = Route.useSearch();
+  const targetUrl = (searchParams as any).url;
+  const parts = useMemo(() => buildPromptParts(budget, targetUrl), [budget, targetUrl]);
   const totalTokens = parts.reduce((sum, p) => sum + estimateTokens(p), 0);
 
   async function copiar(text: string, rotulo: string) {
