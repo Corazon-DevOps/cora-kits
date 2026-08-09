@@ -40,8 +40,6 @@ function createSupabaseClient() {
     'sb_publishable_-53k5QsgArQA7yeAuKcJog_NSCGcCDJ';
 
   return createClient<Database>(SUPABASE_URL, SUPABASE_PUBLISHABLE_KEY, {
-
-  return createClient<Database>(SUPABASE_URL, SUPABASE_PUBLISHABLE_KEY, {
     global: {
       fetch: createSupabaseFetch(SUPABASE_PUBLISHABLE_KEY),
     },
